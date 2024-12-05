@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "565473058699",
+    "project_id": "litlearn-ebc04",
+    "storage_bucket": "litlearn-ebc04.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565473058699:android:d631ba1d1107940ed4598e",
+        "android_client_info": {
+          "package_name": "com.litlablearning.litlearn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTDUAR6PiGYsx5c5Uj9ny0zTj5XOFy97Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/theme/palette.dart';
-import 'package:litlearn/features/auth/presentation/course_page/view.dart';
-import 'package:litlearn/features/auth/presentation/home_page/view.dart';
+import 'package:litlearn/features/learning/presentation/course_page/view.dart';
+import 'package:litlearn/features/learning/presentation/home_page/view.dart';
 import 'package:litlearn/features/auth/presentation/login_page/view.dart';
-import 'package:litlearn/features/auth/presentation/video_player_page/view.dart';
+import 'package:litlearn/features/learning/presentation/video_player_page/view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       child: SafeArea(
         child: MaterialApp(
           title: 'LitLearn',
-          home: LoginPage(),
+          home: VideoPlayerPage(),
         ),
       ),
     );

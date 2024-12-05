@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/widgets/bottom_nav_bar.dart';
 import 'package:litlearn/core/widgets/common.dart';
-import 'package:litlearn/features/auth/presentation/home_page/widgets.dart';
+import 'package:litlearn/features/learning/presentation/home_page/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

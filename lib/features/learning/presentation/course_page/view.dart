@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/widgets/common.dart';
-import 'package:litlearn/features/auth/presentation/course_page/widgets.dart';
+import 'package:litlearn/features/learning/presentation/course_page/widgets.dart';
 
 class CoursePage extends StatefulWidget {
   const CoursePage({super.key});
