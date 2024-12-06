@@ -1,8 +1,12 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:litlearn/core/entity/course_entity.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/widgets/bottom_nav_bar.dart';
 import 'package:litlearn/core/widgets/common.dart';
+import 'package:litlearn/features/learning/presentation/home_page/bloc/home_page_bloc.dart';
 import 'package:litlearn/features/learning/presentation/home_page/widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +17,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<HomePageBloc>().add(HomePageEventGetCourses());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,8 +165,36 @@ class _HomePageState extends State<HomePage> {
                           color: ColorConstants.greyWhite,
                         ),
                         kHeight(20.h),
-                        for (int i = 0; i < 5; i++)
-                          HomePageWidgets.courseItem(),
+                        BlocBuilder<HomePageBloc, HomePageState>(
+                          buildWhen: (previous, current) {
+                            if (current is HomePageStateCourses) {
+                              return true;
+                            }
+                            return false;
+                          },
+                          builder: (context, state) {
+                            List<CourseEntity> homePageCourses = [];
+                            if (state is HomePageStateCourses) {
+                              homePageCourses = state.courses;
+                            }
+
+                            if (homePageCourses.isEmpty) {
+                              return CircularProgressIndicator();
+                            } else {
+                              return Column(
+                                children: [
+                                  for (int i = 0;
+                                      i < homePageCourses.length;
+                                      i++)
+                                    HomePageWidgets.courseItem(
+                                      courseEntity: homePageCourses[i],
+                                      context: context,
+                                    )
+                                ],
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),

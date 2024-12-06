@@ -1,9 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:litlearn/core/entity/enrolled_course_entity.dart';
+import 'package:litlearn/core/entity/video_entity.dart';
 import 'package:litlearn/core/theme/palette.dart';
+import 'package:litlearn/core/utils/calculate_duration.dart';
 import 'package:litlearn/core/widgets/common.dart';
+import 'package:litlearn/features/learning/presentation/course_page/cubit/videos_cubit.dart';
 
 class CoursePageWidgets {
   static Widget infoSelection({
@@ -79,6 +84,7 @@ class CoursePageWidgets {
             child: GestureDetector(
               onTap: () => isExpanded.value = !isExpanded.value,
               child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5.h),
                 decoration: BoxDecoration(
                   color: ColorConstants.blue,
                   borderRadius: BorderRadius.horizontal(
@@ -103,10 +109,14 @@ class CoursePageWidgets {
     );
   }
 
-  static Widget videoItem() {
+  static Widget videoItem(
+      {required VideoEntity video,
+      required EnrolledCourseEntity? enrolledStatus}) {
+    final isVideoUnlocked =
+        enrolledStatus != null && enrolledStatus.unlockCount >= video.seqCount;
     return Container(
       padding: EdgeInsets.all(10.r),
-      margin: EdgeInsets.only(bottom: 15.h),
+      margin: EdgeInsets.symmetric(vertical: 8.h),
       decoration: BoxDecoration(
         color: ColorConstants.liteBlue,
         borderRadius: BorderRadius.circular(15.r),
@@ -118,7 +128,7 @@ class CoursePageWidgets {
             child: Stack(
               children: [
                 Image.network(
-                  'https://zsecurity.org/wp-content/uploads/2024/11/DarkWeb-2-1-e1732103292363.png',
+                  video.thumbnailUrl,
                   height: 70.r,
                   width: 70.r,
                   fit: BoxFit.cover,
@@ -126,7 +136,8 @@ class CoursePageWidgets {
                 Container(
                   height: 70.r,
                   width: 70.r,
-                  color: ColorConstants.blue.withOpacity(0.6),
+                  color: ColorConstants.blue
+                      .withOpacity(isVideoUnlocked ? 0 : 0.6),
                   child: Center(
                     child: Container(
                       padding: EdgeInsets.all(5.r),
@@ -135,7 +146,7 @@ class CoursePageWidgets {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        Icons.play_arrow_rounded,
+                        isVideoUnlocked ? Icons.play_arrow_rounded : Icons.lock,
                         color: ColorConstants.white,
                         size: 25.r,
                       ),
@@ -148,9 +159,10 @@ class CoursePageWidgets {
           kWidth(10.w),
           Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 kText(
-                  text: 'The value scale and how it works',
+                  text: video.tilte,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   maxLines: 2,
@@ -160,7 +172,7 @@ class CoursePageWidgets {
                 Row(
                   children: [
                     kText(
-                      text: '#1',
+                      text: '#${video.seqCount + 1}',
                       fontSize: 13,
                       color: ColorConstants.greyWhite,
                       fontWeight: FontWeight.bold,
@@ -173,7 +185,20 @@ class CoursePageWidgets {
                     ),
                     kWidth(5.w),
                     kText(
-                      text: '06:30',
+                      text: formatDurationWithColon(video.durationInSeconds),
+                      fontSize: 13,
+                      color: ColorConstants.greyWhite,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    kWidth(15.w),
+                    Icon(
+                      Icons.language_sharp,
+                      size: 15.r,
+                      color: ColorConstants.greyWhite,
+                    ),
+                    kWidth(5.w),
+                    kText(
+                      text: video.language.toString(),
                       fontSize: 13,
                       color: ColorConstants.greyWhite,
                       fontWeight: FontWeight.bold,

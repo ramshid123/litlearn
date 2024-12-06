@@ -12,8 +12,8 @@ class KustomBottomNavBar {
       Icons.person_outline,
     ];
     return Container(
-      // padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
-      padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 15.h),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+      // padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 15.h),
       color: ColorConstants.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -49,9 +49,11 @@ class LoginPageWidgets {
   static Widget loginForm({
     required String hintText,
     required IconData icon,
+    required TextEditingController textController,
   }) {
     final focusNode = FocusNode();
     return TextFormField(
+      controller: textController,
       focusNode: focusNode,
       onTapOutside: (v) => focusNode.unfocus(),
       decoration: InputDecoration(
