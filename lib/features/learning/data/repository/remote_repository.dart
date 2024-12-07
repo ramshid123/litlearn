@@ -72,4 +72,16 @@ class LearningRemoteRepositoryImpl implements LearningRemoteRepository {
       return left(KFailure(e.error));
     }
   }
+
+  @override
+  Future<Either<KFailure, void>> updateEnrolledVideoSeqCount(
+      {required String courseId, required String userId}) async {
+    try {
+      await learningRemoteDataSource.updateEnrolledVideoSeqCount(
+          courseId: courseId, userId: userId);
+      return right(null);
+    } on KustomException catch (e) {
+      return left(KFailure(e.error));
+    }
+  }
 }

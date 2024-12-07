@@ -157,14 +157,14 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
-                        kHeight(20.h),
-                        kText(
-                          text: 'Most Popular:',
-                          fontSize: 27,
-                          fontWeight: FontWeight.bold,
-                          color: ColorConstants.greyWhite,
-                        ),
-                        kHeight(20.h),
+                        kHeight(30.h),
+                        // kText(
+                        //   text: 'Most Popular:',
+                        //   fontSize: 27,
+                        //   fontWeight: FontWeight.bold,
+                        //   color: ColorConstants.greyWhite,
+                        // ),
+                        // kHeight(20.h),
                         BlocBuilder<HomePageBloc, HomePageState>(
                           buildWhen: (previous, current) {
                             if (current is HomePageStateCourses) {

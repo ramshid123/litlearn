@@ -9,8 +9,13 @@ import 'package:litlearn/features/auth/data/repository/auth_repository.dart';
 import 'package:litlearn/features/auth/domain/repository/auth_repository.dart';
 import 'package:litlearn/features/auth/domain/usecases/get_current_uid.dart';
 import 'package:litlearn/features/auth/domain/usecases/login.dart';
+import 'package:litlearn/features/auth/domain/usecases/logout.dart';
+import 'package:litlearn/features/auth/domain/usecases/send_reset_pass_email.dart';
 import 'package:litlearn/features/auth/domain/usecases/signup.dart';
+import 'package:litlearn/features/auth/domain/usecases/update_user_data.dart';
+import 'package:litlearn/features/auth/presentation/edit_profile_page/cubit/edit_profile_cubit.dart';
 import 'package:litlearn/features/auth/presentation/login_page/bloc/login_bloc.dart';
+import 'package:litlearn/features/auth/presentation/settings_page/cubit/settings_cubit.dart';
 import 'package:litlearn/features/auth/presentation/splash_screen/cubit/user_auth_cubit.dart';
 import 'package:litlearn/features/learning/data/data%20source/remote_datasource.dart';
 import 'package:litlearn/features/learning/data/repository/remote_repository.dart';
@@ -20,6 +25,7 @@ import 'package:litlearn/features/learning/domain/usecases/get_course_by_id.dart
 import 'package:litlearn/features/learning/domain/usecases/get_courses.dart';
 import 'package:litlearn/features/learning/domain/usecases/get_enrolled_course.dart';
 import 'package:litlearn/features/learning/domain/usecases/get_video_by_id.dart';
+import 'package:litlearn/features/learning/domain/usecases/update_enrolled_course_seqcount.dart';
 import 'package:litlearn/features/learning/presentation/course_page/bloc/course_page_bloc.dart';
 import 'package:litlearn/features/learning/presentation/course_page/cubit/enrolled_course_cubit.dart';
 import 'package:litlearn/features/learning/presentation/course_page/cubit/videos_cubit.dart';
@@ -70,7 +76,12 @@ void _initLearning() {
     ..registerFactory(() => UseCaseGetEnrolledCourse(serviceLocator()))
     ..registerFactory(() => UseCaseEnrollCourse(serviceLocator()))
     ..registerFactory(() => UseCaseGetCurrentUid(serviceLocator()))
+    ..registerFactory(() => UseCaseUpdateUserData(serviceLocator()))
+    ..registerFactory(() => UseCaseResetPasswordEmail(serviceLocator()))
     ..registerFactory(() => UseCaseLogin(serviceLocator()))
+    ..registerFactory(
+        () => UseCaseUpdateEnrolledVideoSeqCount(serviceLocator()))
+    ..registerFactory(() => UseCaseLogout(serviceLocator()))
     ..registerFactory(() => UseCaseSignup(serviceLocator()))
     ..registerLazySingleton<HomePageBloc>(
         () => HomePageBloc(useCaseGetCourses: serviceLocator()))
@@ -83,11 +94,19 @@ void _initLearning() {
           useCaseGetEnrolledCourse: serviceLocator(),
           useCaseEnrollCourse: serviceLocator(),
         ))
-    ..registerLazySingleton(
-        () => VideoPlayerCubit(useCaseGetVideoById: serviceLocator()))
+    ..registerLazySingleton(() => VideoPlayerCubit(
+        useCaseGetVideoById: serviceLocator(),
+        useCaseUpdateEnrolledVideoSeqCount: serviceLocator()))
     ..registerLazySingleton(() => LoginBloc(
-        useCaseLogin: serviceLocator(), useCaseSignup: serviceLocator()))
+          useCaseLogin: serviceLocator(),
+          useCaseSignup: serviceLocator(),
+          useCaseResetPasswordEmail: serviceLocator(),
+        ))
     ..registerLazySingleton(() => UserBloc())
     ..registerLazySingleton(
-        () => UserAuthCubit(useCaseGetCurrentUid: serviceLocator()));
+        () => UserAuthCubit(useCaseGetCurrentUid: serviceLocator()))
+    ..registerLazySingleton(
+        () => SettingsCubit(useCaseLogout: serviceLocator()))
+    ..registerLazySingleton(
+        () => EditProfileCubit(useCaseUpdateUserData: serviceLocator()));
 }

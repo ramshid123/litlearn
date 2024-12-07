@@ -7,6 +7,8 @@ abstract interface class AuthDataSource {
   Future<UserModel?> getUserData(String email);
 
   Future registerUser(UserModel user);
+
+  Future updateUser(UserModel user);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -38,6 +40,34 @@ class AuthDataSourceImpl implements AuthDataSource {
       await firestoreDB
           .collection(FirestoreCollections.users)
           .add(user.toJson());
+    } catch (e) {
+      throw KustomException(e.toString());
+    }
+  }
+
+  @override
+  Future updateUser(UserModel user) async {
+    try {
+      final response = await firestoreDB
+          .collection(FirestoreCollections.users)
+          .where('email', isEqualTo: user.email)
+          .get();
+
+      if (response.docs.isNotEmpty) {
+        await response.docs.first.reference.update({
+          'full_name': user.fullName.isEmpty
+              ? response.docs.first.data()['full_name']
+              : user.fullName,
+          'phone_no': user.phoneNo.isEmpty
+              ? response.docs.first.data()['phone_no']
+              : user.phoneNo,
+          'dob':
+              user.dob.isEmpty ? response.docs.first.data()['dob'] : user.dob,
+          'gender': user.gender.isEmpty
+              ? response.docs.first.data()['gender']
+              : user.gender,
+        });
+      }
     } catch (e) {
       throw KustomException(e.toString());
     }

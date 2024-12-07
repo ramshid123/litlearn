@@ -18,3 +18,5 @@ final class LoginStateFailure extends LoginState {
 
   LoginStateFailure(this.errormsg);
 }
+
+final class LoginStateEmailSent extends LoginState{}

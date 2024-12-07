@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/entity/enrolled_course_entity.dart';
+import 'package:litlearn/core/entity/user_entity.dart';
 import 'package:litlearn/core/entity/video_entity.dart';
+import 'package:litlearn/core/global%20states/user%20state/bloc/user_bloc.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/utils/calculate_duration.dart';
 import 'package:litlearn/core/widgets/common.dart';
@@ -24,12 +26,16 @@ class CoursePage extends StatefulWidget {
 class _CoursePageState extends State<CoursePage> {
   final isExpanded = ValueNotifier(false);
   final infoSectionIndex = ValueNotifier(1);
+  late UserEntity storedUserData;
 
   final scrollController = ScrollController();
 
   @override
   void initState() {
     // TODO: implement initState
+    storedUserData =
+        (context.read<UserBloc>().state as UserStateUserEntity).userEntity;
+
     context
         .read<CoursePageBloc>()
         .add(CoursePageEventGetCourseById(widget.courseId));
@@ -45,7 +51,7 @@ class _CoursePageState extends State<CoursePage> {
           context.read<VideosCubit>().getVideos(state.course.videoIds);
           context
               .read<EnrolledCourseCubit>()
-              .getEnrolledStatus(userId: 'ramshid', courseId: widget.courseId);
+              .getEnrolledStatus(userId: storedUserData.userId, courseId: widget.courseId);
           // context
           //     .read<CoursePageBloc>()
           //     .add(CoursePageEventGetVideos(state.course.videoIds));
@@ -267,13 +273,15 @@ class _CoursePageState extends State<CoursePage> {
                                                                 itemCount:
                                                                     videos
                                                                         .length,
-                                                                itemBuilder: (context,
-                                                                        index) =>
-                                                                    CoursePageWidgets.videoItem(
-                                                                        video: videos[
-                                                                            index],
-                                                                        enrolledStatus:
-                                                                            enrolledStatus),
+                                                                itemBuilder: (context, index) => CoursePageWidgets.videoItem(
+                                                                    courseId: widget
+                                                                        .courseId,
+                                                                    context:
+                                                                        context,
+                                                                    video: videos[
+                                                                        index],
+                                                                    enrolledStatus:
+                                                                        enrolledStatus),
                                                               ),
                                                             );
                                                           },
@@ -321,6 +329,9 @@ class _CoursePageState extends State<CoursePage> {
                                                   itemBuilder: (context,
                                                           index) =>
                                                       CoursePageWidgets.videoItem(
+                                                          courseId:
+                                                              widget.courseId,
+                                                          context: context,
                                                           video: videos[index],
                                                           enrolledStatus:
                                                               enrolledStatus),
@@ -353,7 +364,7 @@ class _CoursePageState extends State<CoursePage> {
                   return GestureDetector(
                     onTap: () async {
                       await context.read<EnrolledCourseCubit>().enrollCourse(
-                          courseId: widget.courseId, userId: 'ramshid');
+                          courseId: widget.courseId, userId: storedUserData.userId);
 
                       context
                           .read<CoursePageBloc>()

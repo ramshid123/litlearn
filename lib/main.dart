@@ -6,7 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/global%20states/user%20state/bloc/user_bloc.dart';
 import 'package:litlearn/core/theme/palette.dart';
+import 'package:litlearn/features/auth/presentation/edit_profile_page/cubit/edit_profile_cubit.dart';
+import 'package:litlearn/features/auth/presentation/edit_profile_page/view.dart';
 import 'package:litlearn/features/auth/presentation/login_page/bloc/login_bloc.dart';
+import 'package:litlearn/features/auth/presentation/settings_page/cubit/settings_cubit.dart';
 import 'package:litlearn/features/auth/presentation/settings_page/view.dart';
 import 'package:litlearn/features/auth/presentation/splash_screen/cubit/user_auth_cubit.dart';
 import 'package:litlearn/features/learning/presentation/course_page/bloc/course_page_bloc.dart';
@@ -63,6 +66,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<LoginBloc>(create: (_) => serviceLocator()),
         BlocProvider<UserAuthCubit>(create: (_) => serviceLocator()),
         BlocProvider<UserBloc>(create: (_) => serviceLocator()),
+        BlocProvider<SettingsCubit>(create: (_) => serviceLocator()),
+        BlocProvider<EditProfileCubit>(create: (_) => serviceLocator()),
+        
       ],
       child: const ScreenUtilInit(
         designSize: Size(392.72727272727275, 803.6363636363636),
@@ -70,7 +76,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             title: 'LitLearn',
             home: SplashScreen(),
-            // home: SettingsPage(),
+            // home: EditProfilePage(),
           ),
         ),
       ),

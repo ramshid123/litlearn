@@ -18,3 +18,9 @@ final class LoginEventLogin extends LoginEvent {
 
   LoginEventLogin({required this.email, required this.password});
 }
+
+final class LoginEventForgotPassword extends LoginEvent {
+  final String email;
+
+  LoginEventForgotPassword(this.email);
+}

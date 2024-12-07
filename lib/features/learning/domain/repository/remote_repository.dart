@@ -16,4 +16,7 @@ abstract interface class LearningRemoteRepository {
 
   Future<Either<KFailure, void>> enrollCourse(
       {required String courseId, required String userId});
+
+  Future<Either<KFailure, void>> updateEnrolledVideoSeqCount(
+      {required String courseId, required String userId});
 }

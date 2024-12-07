@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:litlearn/core/error/exception.dart';
 import 'package:litlearn/features/auth/data/model/user_model.dart';
@@ -10,6 +12,8 @@ abstract interface class AuthService {
   Future logout();
 
   Future<User?> getCurrentUser();
+
+  Future sendPasswordResetEmail(String email);
 }
 
 class AuthServiceImpl implements AuthService {
@@ -54,6 +58,15 @@ class AuthServiceImpl implements AuthService {
   Future logout() async {
     try {
       await authInstance.signOut();
+    } catch (e) {
+      throw KustomException(e.toString());
+    }
+  }
+
+  @override
+  Future sendPasswordResetEmail(String email) async {
+    try {
+      await authInstance.sendPasswordResetEmail(email: email);
     } catch (e) {
       throw KustomException(e.toString());
     }

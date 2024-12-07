@@ -15,4 +15,10 @@ abstract interface class AuthRepository {
   });
 
   Future<Either<KFailure, UserEntity?>> getCurrentUser();
+
+  Future<Either<KFailure, void>> logout();
+
+  Future<Either<KFailure, UserEntity>> updateUserData(UserEntity user);
+
+  Future<Either<KFailure, void>> sendResetPasswordEmail(String email);
 }

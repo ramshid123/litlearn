@@ -8,7 +8,9 @@ import 'package:litlearn/core/entity/video_entity.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/utils/calculate_duration.dart';
 import 'package:litlearn/core/widgets/common.dart';
+import 'package:litlearn/features/learning/presentation/course_page/bloc/course_page_bloc.dart';
 import 'package:litlearn/features/learning/presentation/course_page/cubit/videos_cubit.dart';
+import 'package:litlearn/features/learning/presentation/video_player_page/view.dart';
 
 class CoursePageWidgets {
   static Widget infoSelection({
@@ -111,104 +113,123 @@ class CoursePageWidgets {
 
   static Widget videoItem(
       {required VideoEntity video,
-      required EnrolledCourseEntity? enrolledStatus}) {
+      required EnrolledCourseEntity? enrolledStatus,
+      required String courseId,
+      required BuildContext context}) {
     final isVideoUnlocked =
         enrolledStatus != null && enrolledStatus.unlockCount >= video.seqCount;
-    return Container(
-      padding: EdgeInsets.all(10.r),
-      margin: EdgeInsets.symmetric(vertical: 8.h),
-      decoration: BoxDecoration(
-        color: ColorConstants.liteBlue,
-        borderRadius: BorderRadius.circular(15.r),
-      ),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10.r),
-            child: Stack(
-              children: [
-                Image.network(
-                  video.thumbnailUrl,
-                  height: 70.r,
-                  width: 70.r,
-                  fit: BoxFit.cover,
-                ),
-                Container(
-                  height: 70.r,
-                  width: 70.r,
-                  color: ColorConstants.blue
-                      .withOpacity(isVideoUnlocked ? 0 : 0.6),
-                  child: Center(
-                    child: Container(
-                      padding: EdgeInsets.all(5.r),
-                      decoration: BoxDecoration(
-                        color: ColorConstants.white.withOpacity(0.4),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        isVideoUnlocked ? Icons.play_arrow_rounded : Icons.lock,
-                        color: ColorConstants.white,
-                        size: 25.r,
+    return GestureDetector(
+      onTap: () async {
+        if (isVideoUnlocked) {
+          await Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => VideoPlayerPage(
+                    video: video,
+                    enrolledCourseEntity: enrolledStatus,
+                  )));
+
+          context
+              .read<CoursePageBloc>()
+              .add(CoursePageEventGetCourseById(courseId));
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.all(10.r),
+        margin: EdgeInsets.symmetric(vertical: 8.h),
+        decoration: BoxDecoration(
+          color: ColorConstants.liteBlue,
+          borderRadius: BorderRadius.circular(15.r),
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.r),
+              child: Stack(
+                children: [
+                  Image.network(
+                    video.thumbnailUrl,
+                    height: 70.r,
+                    width: 70.r,
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    height: 70.r,
+                    width: 70.r,
+                    color: ColorConstants.blue
+                        .withOpacity(isVideoUnlocked ? 0 : 0.6),
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.all(5.r),
+                        decoration: BoxDecoration(
+                          color: ColorConstants.white.withOpacity(0.4),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isVideoUnlocked
+                              ? Icons.play_arrow_rounded
+                              : Icons.lock,
+                          color: ColorConstants.white,
+                          size: 25.r,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          kWidth(10.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                kText(
-                  text: video.tilte,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  maxLines: 2,
-                  color: ColorConstants.white,
-                ),
-                kHeight(10.h),
-                Row(
-                  children: [
-                    kText(
-                      text: '#${video.seqCount + 1}',
-                      fontSize: 13,
-                      color: ColorConstants.greyWhite,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    kWidth(15.w),
-                    Icon(
-                      Icons.timer_outlined,
-                      size: 15.r,
-                      color: ColorConstants.greyWhite,
-                    ),
-                    kWidth(5.w),
-                    kText(
-                      text: formatDurationWithColon(video.durationInSeconds),
-                      fontSize: 13,
-                      color: ColorConstants.greyWhite,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    kWidth(15.w),
-                    Icon(
-                      Icons.language_sharp,
-                      size: 15.r,
-                      color: ColorConstants.greyWhite,
-                    ),
-                    kWidth(5.w),
-                    kText(
-                      text: video.language.toString(),
-                      fontSize: 13,
-                      color: ColorConstants.greyWhite,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ],
-                ),
-              ],
+            kWidth(10.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  kText(
+                    text: video.tilte,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    maxLines: 2,
+                    color: ColorConstants.white,
+                  ),
+                  kHeight(10.h),
+                  Row(
+                    children: [
+                      kText(
+                        text: '#${video.seqCount + 1}',
+                        fontSize: 13,
+                        color: ColorConstants.greyWhite,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      kWidth(15.w),
+                      Icon(
+                        Icons.timer_outlined,
+                        size: 15.r,
+                        color: ColorConstants.greyWhite,
+                      ),
+                      kWidth(5.w),
+                      kText(
+                        text: formatDurationWithColon(video.durationInSeconds),
+                        fontSize: 13,
+                        color: ColorConstants.greyWhite,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      kWidth(15.w),
+                      Icon(
+                        Icons.language_sharp,
+                        size: 15.r,
+                        color: ColorConstants.greyWhite,
+                      ),
+                      kWidth(5.w),
+                      kText(
+                        text: video.language.toString(),
+                        fontSize: 13,
+                        color: ColorConstants.greyWhite,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

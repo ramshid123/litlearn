@@ -19,6 +19,9 @@ abstract interface class LearningRemoteDataSource {
       {required String courseId, required String userId});
 
   Future enrollCourse({required String courseId, required String userId});
+
+  Future updateEnrolledVideoSeqCount(
+      {required String courseId, required String userId});
 }
 
 class LearningRemoteDataSourceImpl implements LearningRemoteDataSource {
@@ -102,6 +105,28 @@ class LearningRemoteDataSourceImpl implements LearningRemoteDataSource {
       ).toJson());
 
       return null;
+    } catch (e) {
+      throw KustomException(e.toString());
+    }
+  }
+
+  @override
+  Future updateEnrolledVideoSeqCount(
+      {required String courseId, required String userId}) async {
+    try {
+      final response = await firestoreDB
+          .collection(FirestoreCollections.enrolledCourses)
+          .where('user_id', isEqualTo: userId)
+          .where('course_id', isEqualTo: courseId)
+          .get();
+
+      if (response.docs.isNotEmpty) {
+        response.docs.first.reference.update({
+          'unlock_count':
+              int.parse(response.docs.first.data()['unlock_count'].toString()) +
+                  1,
+        });
+      }
     } catch (e) {
       throw KustomException(e.toString());
     }

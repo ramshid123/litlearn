@@ -7,8 +7,12 @@ final class VideoPlayerInitial extends VideoPlayerState {}
 
 final class VideoPlayerStateLoading extends VideoPlayerState {}
 
-final class VideoPlayerStateLoadVideo extends VideoPlayerState {
-  final VideoEntity video;
+// final class VideoPlayerStateGetVideo extends VideoPlayerState {
+//   final VideoEntity video;
 
-  VideoPlayerStateLoadVideo(this.video);
-}
+//   VideoPlayerStateGetVideo(this.video);
+// }
+
+final class VideoPlayerStateLoadVideo extends VideoPlayerState {}
+
+final class VideoPlayerStateFinishedWatch extends VideoPlayerState {}

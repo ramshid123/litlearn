@@ -78,4 +78,35 @@ class AuthRepositoryImpl implements AuthRepository {
       return left(KFailure(e.error));
     }
   }
+
+  @override
+  Future<Either<KFailure, void>> logout() async {
+    try {
+      await authService.logout();
+      return right(null);
+    } on KustomException catch (e) {
+      return left(KFailure(e.error));
+    }
+  }
+
+  @override
+  Future<Either<KFailure, UserEntity>> updateUserData(UserEntity user) async {
+    try {
+      await authDataSource.updateUser(UserModel.fromEntity(user));
+      final userData = await authDataSource.getUserData(user.email);
+      return right(userData!);
+    } on KustomException catch (e) {
+      return left(KFailure(e.error));
+    }
+  }
+
+  @override
+  Future<Either<KFailure, void>> sendResetPasswordEmail(String email) async {
+    try {
+      await authService.sendPasswordResetEmail(email);
+      return right(null);
+    } on KustomException catch (e) {
+      return left(KFailure(e.error));
+    }
+  }
 }

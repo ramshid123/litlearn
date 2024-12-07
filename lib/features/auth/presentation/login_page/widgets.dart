@@ -50,11 +50,18 @@ class LoginPageWidgets {
     required String hintText,
     required IconData icon,
     required TextEditingController textController,
+    required LoginFormType loginFormType,
   }) {
     final focusNode = FocusNode();
     return TextFormField(
       controller: textController,
       focusNode: focusNode,
+      keyboardType: loginFormType == LoginFormType.email
+          ? TextInputType.emailAddress
+          : loginFormType == LoginFormType.password
+              ? TextInputType.visiblePassword
+              : TextInputType.text,
+      cursorColor: ColorConstants.blue,
       onTapOutside: (v) => focusNode.unfocus(),
       decoration: InputDecoration(
         labelText: hintText,
@@ -83,4 +90,10 @@ class LoginPageWidgets {
       ),
     );
   }
+}
+
+enum LoginFormType {
+  email,
+  name,
+  password,
 }
