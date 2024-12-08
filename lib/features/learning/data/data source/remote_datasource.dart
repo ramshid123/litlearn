@@ -1,3 +1,4 @@
+import 'package:litlearn/features/learning/data/models/category_model.dart';
 import 'package:uuid/uuid.dart' as uuid;
 import 'dart:developer';
 
@@ -9,7 +10,7 @@ import 'package:litlearn/features/learning/data/models/enrolled_course_model.dar
 import 'package:litlearn/features/learning/data/models/video_model.dart';
 
 abstract interface class LearningRemoteDataSource {
-  Future<List<CourseModel>> getCourses();
+  Future<List<CourseModel>> getCourses(String? category);
 
   Future<CourseModel> getCourseById(String courseId);
 
@@ -22,6 +23,10 @@ abstract interface class LearningRemoteDataSource {
 
   Future updateEnrolledVideoSeqCount(
       {required String courseId, required String userId});
+
+  Future<List<EnrolledCourseModel>> getEnrolledCoursesList(String userId);
+
+  Future<List<CategoryModel>> getCategories();
 }
 
 class LearningRemoteDataSourceImpl implements LearningRemoteDataSource {
@@ -30,10 +35,12 @@ class LearningRemoteDataSourceImpl implements LearningRemoteDataSource {
   LearningRemoteDataSourceImpl(this.firestoreDB);
 
   @override
-  Future<List<CourseModel>> getCourses() async {
+  Future<List<CourseModel>> getCourses(String? category) async {
     try {
-      final response =
-          await firestoreDB.collection(FirestoreCollections.courses).get();
+      final response = await firestoreDB
+          .collection(FirestoreCollections.courses)
+          .where('category', isEqualTo: category)
+          .get();
       return response.docs.map((e) => CourseModel.fromJson(e)).toList();
     } catch (e) {
       throw KustomException(e.toString());
@@ -114,6 +121,8 @@ class LearningRemoteDataSourceImpl implements LearningRemoteDataSource {
   Future updateEnrolledVideoSeqCount(
       {required String courseId, required String userId}) async {
     try {
+      log('updateEnrolledVideoSeqCount executed');
+
       final response = await firestoreDB
           .collection(FirestoreCollections.enrolledCourses)
           .where('user_id', isEqualTo: userId)
@@ -127,6 +136,33 @@ class LearningRemoteDataSourceImpl implements LearningRemoteDataSource {
                   1,
         });
       }
+    } catch (e) {
+      throw KustomException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<EnrolledCourseModel>> getEnrolledCoursesList(
+      String userId) async {
+    try {
+      final response = await firestoreDB
+          .collection(FirestoreCollections.enrolledCourses)
+          .where('user_id', isEqualTo: userId)
+          .get();
+
+      return response.docs.map((e) => EnrolledCourseModel.fromJson(e)).toList();
+    } catch (e) {
+      throw KustomException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<CategoryModel>> getCategories() async {
+    try {
+      final response =
+          await firestoreDB.collection(FirestoreCollections.categories).get();
+
+      return response.docs.map((e) => CategoryModel.fromJson(e)).toList();
     } catch (e) {
       throw KustomException(e.toString());
     }

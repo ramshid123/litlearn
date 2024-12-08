@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:litlearn/core/entity/category_entity.dart';
 import 'package:litlearn/core/entity/course_entity.dart';
+import 'package:litlearn/features/learning/domain/usecases/get_categories.dart';
 import 'package:litlearn/features/learning/domain/usecases/get_courses.dart';
 import 'package:meta/meta.dart';
 
@@ -25,7 +27,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
   Future _onHomePageEventGetCourses(
       HomePageEventGetCourses event, Emitter<HomePageState> emit) async {
-    final response = await _useCaseGetCourses(UseCaseGetCoursesParams());
+    emit(HomePageStateCourseLoading());
+    final response =
+        await _useCaseGetCourses(UseCaseGetCoursesParams(event.category));
 
     response.fold(
       (l) {

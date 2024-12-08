@@ -25,6 +25,8 @@ class VideoPlayerPage extends StatefulWidget {
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
+  bool isVideoEnded = false;
+
   late VideoPlayerController videoPlayerController;
 
   final seekPosition = ValueNotifier(0.0);
@@ -53,7 +55,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       }
       if (videoPlayerController.value.duration ==
               videoPlayerController.value.position &&
-          videoPlayerController.value.duration.inMilliseconds != 0) {
+          videoPlayerController.value.duration.inMilliseconds != 0 &&
+          !isVideoEnded) {
+        isVideoEnded = true;
         onVideoEnd(
             courseId: widget.enrolledCourseEntity.courseId,
             userId: widget.enrolledCourseEntity.userId);
@@ -85,9 +89,11 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     required String userId,
   }) async {
     if (widget.video.seqCount == widget.enrolledCourseEntity.unlockCount) {
-      context
+      await context
           .read<VideoPlayerCubit>()
           .updateSeqCount(courseId: courseId, userId: userId);
+    } else {
+      Navigator.pop(context);
     }
   }
 

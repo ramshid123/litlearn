@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/global%20states/user%20state/bloc/user_bloc.dart';
 import 'package:litlearn/core/theme/palette.dart';
+import 'package:litlearn/features/auth/presentation/email_verification_page/view.dart';
 import 'package:litlearn/features/auth/presentation/login_page/view.dart';
 import 'package:litlearn/features/auth/presentation/splash_screen/cubit/user_auth_cubit.dart';
 import 'package:litlearn/features/learning/presentation/home_page/view.dart';
@@ -37,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
             context.read<UserBloc>().add(UserEventUserUpdate(state.user!));
             await Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
+                MaterialPageRoute(builder: (context) => const EmailVerificationPage()),
                 (_) => false);
           }
 
@@ -48,8 +49,8 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Scaffold(
         backgroundColor: ColorConstants.blue,
         body: Center(
-          child: Image.network(
-            'https://litlablearning.com/Logo.png',
+          child: Image.asset(
+            'assets/litlab_logo.png',
             height: 150.r,
             width: 150.r,
           ),

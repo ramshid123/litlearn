@@ -13,7 +13,11 @@ class UseCaseGetCourses
   @override
   Future<Either<KFailure, List<CourseEntity>>> call(
           UseCaseGetCoursesParams params) async =>
-      await learningRemoteRepository.getCourses();
+      await learningRemoteRepository.getCourses(params.category);
 }
 
-class UseCaseGetCoursesParams {}
+class UseCaseGetCoursesParams {
+  final String? category;
+
+  UseCaseGetCoursesParams(this.category);
+}

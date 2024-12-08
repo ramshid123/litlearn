@@ -16,3 +16,7 @@ final class HomePageStateCourses extends HomePageState {
 
   HomePageStateCourses(this.courses);
 }
+
+final class HomePageStateCourseLoading extends HomePageState {}
+
+

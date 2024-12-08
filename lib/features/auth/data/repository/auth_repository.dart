@@ -109,4 +109,24 @@ class AuthRepositoryImpl implements AuthRepository {
       return left(KFailure(e.error));
     }
   }
+
+  @override
+  Future<Either<KFailure, bool>> emailVerificationCheck() async {
+    try {
+      final response = await authService.checkEmailVerification();
+      return right(response);
+    } on KustomException catch (e) {
+      return left(KFailure(e.error));
+    }
+  }
+
+  @override
+  Future<Either<KFailure, void>> sendVerificationEmail() async {
+    try {
+      await authService.sendVerificationEmail();
+      return right(null);
+    } on KustomException catch (e) {
+      return left(KFailure(e.error));
+    }
+  }
 }

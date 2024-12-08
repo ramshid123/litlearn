@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/features/auth/presentation/settings_page/view.dart';
 import 'package:litlearn/features/learning/presentation/home_page/view.dart';
+import 'package:litlearn/features/learning/presentation/my_courses_page/view.dart';
+import 'package:litlearn/features/learning/presentation/wishlist%20page/view.dart';
 
 class KustomBottomNavBar {
   static Widget bottomNavBar({required int index}) {
@@ -14,8 +16,8 @@ class KustomBottomNavBar {
     ];
     const pages = [
       HomePage(),
-      HomePage(),
-      HomePage(),
+      MyCoursesPage(),
+      WishlistPage(),
       SettingsPage(),
     ];
     return Container(

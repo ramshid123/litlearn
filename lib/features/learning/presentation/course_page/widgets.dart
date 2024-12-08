@@ -3,10 +3,13 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:litlearn/core/entity/course_entity.dart';
 import 'package:litlearn/core/entity/enrolled_course_entity.dart';
 import 'package:litlearn/core/entity/video_entity.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/utils/calculate_duration.dart';
+import 'package:litlearn/core/utils/string_funtions.dart';
 import 'package:litlearn/core/widgets/common.dart';
 import 'package:litlearn/features/learning/presentation/course_page/bloc/course_page_bloc.dart';
 import 'package:litlearn/features/learning/presentation/course_page/cubit/videos_cubit.dart';
@@ -230,6 +233,155 @@ class CoursePageWidgets {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  static Widget aboutCourseSection(CourseEntity course) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          kHeight(15.h),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15.r),
+            child: Image.network(
+              course.thumbnailUrl,
+              height: 200.h,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          kHeight(20.h),
+          kText(
+            text: course.courseName,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            maxLines: 5,
+          ),
+          kHeight(20.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      kText(
+                        text: '4.6',
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      kWidth(5.w),
+                      Icon(
+                        Icons.star,
+                        size: 18.r,
+                        color: ColorConstants.yellow,
+                      ),
+                    ],
+                  ),
+                  kText(
+                    text: '2000 ratings',
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: ColorConstants.white.withOpacity(0.5),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  kText(
+                    text: '127,717',
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  kText(
+                    text: 'Students',
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: ColorConstants.white.withOpacity(0.5),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  kText(
+                    text:
+                        '${Duration(milliseconds: int.tryParse(course.totalVideoHours) ?? 0).inHours} hours',
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  kText(
+                    text: 'Total',
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: ColorConstants.white.withOpacity(0.5),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          kHeight(20.h),
+          Row(
+            children: [
+              Icon(
+                Icons.info,
+                size: 20.r,
+                color: ColorConstants.greyWhite,
+              ),
+              kWidth(10.w),
+              kText(
+                text:
+                    'Created on ${DateFormat('MMM yyyy').format(course.createdAt.toDate())}',
+                fontSize: 15,
+                color: ColorConstants.greyWhite,
+              )
+            ],
+          ),
+          kHeight(10.h),
+          Row(
+            children: [
+              Icon(
+                Icons.language,
+                size: 20.r,
+                color: ColorConstants.greyWhite,
+              ),
+              kWidth(10.w),
+              kText(
+                text: course.language,
+                fontSize: 15,
+                color: ColorConstants.greyWhite,
+              )
+            ],
+          ),
+          Divider(
+            height: 40.h,
+            color: ColorConstants.greyWhite.withOpacity(0.5),
+          ),
+          kText(
+            text: 'Instructor',
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: ColorConstants.white.withOpacity(0.7),
+          ),
+          kText(
+            text: capitalizeWords(course.teacherName),
+            fontSize: 17,
+          ),
+          kHeight(15.h),
+          kText(
+            text: 'Category',
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: ColorConstants.white.withOpacity(0.7),
+          ),
+          kText(
+            text: capitalizeWords(course.category),
+            fontSize: 17,
+          ),
+          kHeight(30.h),
+        ],
       ),
     );
   }

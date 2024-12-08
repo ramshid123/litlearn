@@ -21,4 +21,8 @@ abstract interface class AuthRepository {
   Future<Either<KFailure, UserEntity>> updateUserData(UserEntity user);
 
   Future<Either<KFailure, void>> sendResetPasswordEmail(String email);
+
+  Future<Either<KFailure, void>> sendVerificationEmail();
+
+  Future<Either<KFailure, bool>> emailVerificationCheck();
 }

@@ -1,5 +1,5 @@
 String calculateDurationInHourMin(Duration duration) {
-  return '${duration.inHours}h ${duration.inMinutes.remainder(60) == 0 ? '' : '${duration.inMinutes.remainder(60)}m'}';
+  return '${duration.inHours}${duration.inMinutes.remainder(60) == 0?' hours':'h'} ${duration.inMinutes.remainder(60) == 0 ? '' : '${duration.inMinutes.remainder(60)}m'}';
 }
 
 String formatDurationWithColon(int seconds) {

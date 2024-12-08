@@ -7,6 +7,7 @@ import 'package:litlearn/core/global%20states/user%20state/bloc/user_bloc.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/utils/show_toast.dart';
 import 'package:litlearn/core/widgets/common.dart';
+import 'package:litlearn/features/auth/presentation/email_verification_page/view.dart';
 import 'package:litlearn/features/auth/presentation/login_page/bloc/login_bloc.dart';
 import 'package:litlearn/features/auth/presentation/login_page/content.dart';
 import 'package:litlearn/features/learning/presentation/home_page/view.dart';
@@ -89,7 +90,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               const Duration(seconds: 1),
               () async => Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => const EmailVerificationPage()),
                   (_) => false));
         }
       },
@@ -172,8 +173,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                         ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(20.r),
-                                          child: Image.network(
-                                            'https://litlablearning.com/Logo.png',
+                                          child: Image.asset(
+                                            'assets/litlab_logo.png',
                                             height: 70.r,
                                             width: 70.r,
                                             fit: BoxFit.contain,

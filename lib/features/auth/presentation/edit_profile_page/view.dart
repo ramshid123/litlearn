@@ -72,23 +72,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: Row(
                       children: [
-                        Container(
-                          padding: EdgeInsets.all(10.r),
-                          decoration: BoxDecoration(
-                            color: ColorConstants.greyWhite,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.arrow_back,
-                            size: 25.r,
-                            color: ColorConstants.blue,
+                        GestureDetector(
+                          onTap: ()=> Navigator.pop(context),
+                          child: Container(
+                            padding: EdgeInsets.all(10.r),
+                            decoration: BoxDecoration(
+                              color: ColorConstants.white,
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: 25.r,
+                              color: ColorConstants.blue,
+                            ),
                           ),
                         ),
                         kWidth(20.w),
                         kText(
                           text: 'Personal Information',
                           fontWeight: FontWeight.bold,
-                          color: ColorConstants.greyWhite,
+                          color: ColorConstants.white,
                           fontSize: 20,
                         ),
                       ],

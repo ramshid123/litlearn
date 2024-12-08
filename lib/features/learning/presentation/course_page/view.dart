@@ -25,7 +25,7 @@ class CoursePage extends StatefulWidget {
 
 class _CoursePageState extends State<CoursePage> {
   final isExpanded = ValueNotifier(false);
-  final infoSectionIndex = ValueNotifier(1);
+  final infoSectionIndex = ValueNotifier(0);
   late UserEntity storedUserData;
 
   final scrollController = ScrollController();
@@ -49,9 +49,8 @@ class _CoursePageState extends State<CoursePage> {
       listener: (context, state) {
         if (state is CoursePageStateCourse) {
           context.read<VideosCubit>().getVideos(state.course.videoIds);
-          context
-              .read<EnrolledCourseCubit>()
-              .getEnrolledStatus(userId: storedUserData.userId, courseId: widget.courseId);
+          context.read<EnrolledCourseCubit>().getEnrolledStatus(
+              userId: storedUserData.userId, courseId: widget.courseId);
           // context
           //     .read<CoursePageBloc>()
           //     .add(CoursePageEventGetVideos(state.course.videoIds));
@@ -62,7 +61,7 @@ class _CoursePageState extends State<CoursePage> {
         body: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(vertical: 10.h),
+              padding: EdgeInsets.symmetric(vertical: 20.h),
               decoration: BoxDecoration(
                 color: ColorConstants.liteBlue,
                 // boxShadow: [
@@ -80,45 +79,54 @@ class _CoursePageState extends State<CoursePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(8.r),
-                        decoration: BoxDecoration(
-                          color: ColorConstants.white,
-                          borderRadius: BorderRadius.circular(10.r),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
-                              offset: Offset(0, 0),
-                              blurRadius: 9,
-                              spreadRadius: 0,
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          Icons.navigate_before,
-                          size: 35.r,
-                          color: ColorConstants.blue,
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Container(
+                          padding: EdgeInsets.all(8.r),
+                          decoration: BoxDecoration(
+                            color: ColorConstants.white,
+                            borderRadius: BorderRadius.circular(10.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                offset: Offset(0, 0),
+                                blurRadius: 9,
+                                spreadRadius: 0,
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.navigate_before,
+                            size: 35.r,
+                            color: ColorConstants.blue,
+                          ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(8.r),
-                        decoration: BoxDecoration(
-                          color: ColorConstants.white,
-                          borderRadius: BorderRadius.circular(10.r),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
-                              offset: Offset(0, 0),
-                              blurRadius: 9,
-                              spreadRadius: 0,
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          Icons.bookmark_add_outlined,
-                          size: 35.r,
-                          color: ColorConstants.blue,
-                        ),
+                      BlocBuilder<EnrolledCourseCubit, EnrolledCourseEntity?>(
+                        builder: (context, enrolledStatus) {
+                          return enrolledStatus != null
+                              ? Container()
+                              : Container(
+                                  padding: EdgeInsets.all(8.r),
+                                  decoration: BoxDecoration(
+                                    color: ColorConstants.white,
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.5),
+                                        offset: Offset(0, 0),
+                                        blurRadius: 9,
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.bookmark_add_outlined,
+                                    size: 35.r,
+                                    color: ColorConstants.blue,
+                                  ),
+                                );
+                        },
                       ),
                     ],
                   ),
@@ -128,9 +136,21 @@ class _CoursePageState extends State<CoursePage> {
             BlocBuilder<CoursePageBloc, CoursePageState>(
               builder: (context, state) {
                 if (state is CoursePageStateLoading) {
-                  return const Expanded(
+                  return Expanded(
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          padding: EdgeInsets.all(20.r),
+                          decoration: BoxDecoration(
+                            color: ColorConstants.white,
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                          child: CircularProgressIndicator(
+                            color: ColorConstants.blue,
+                          ),
+                        ),
+                      ),
                     ),
                   );
                 } else if (state is CoursePageStateCourse) {
@@ -257,33 +277,68 @@ class _CoursePageState extends State<CoursePage> {
                                                       isExpanded: isExpanded,
                                                     ),
                                                     BlocBuilder<VideosCubit,
-                                                        List<VideoEntity>>(
-                                                      builder:
-                                                          (context, videos) {
+                                                        VideosState>(
+                                                      builder: (context,
+                                                          videosState) {
                                                         return BlocBuilder<
                                                             EnrolledCourseCubit,
                                                             EnrolledCourseEntity?>(
                                                           builder: (context,
                                                               enrolledStatus) {
-                                                            return Expanded(
-                                                              child: ListView
-                                                                  .builder(
-                                                                controller:
-                                                                    scrollController,
-                                                                itemCount:
-                                                                    videos
-                                                                        .length,
-                                                                itemBuilder: (context, index) => CoursePageWidgets.videoItem(
-                                                                    courseId: widget
-                                                                        .courseId,
-                                                                    context:
-                                                                        context,
-                                                                    video: videos[
-                                                                        index],
-                                                                    enrolledStatus:
-                                                                        enrolledStatus),
-                                                              ),
-                                                            );
+                                                            if (videosState
+                                                                is VideosStateLoading) {
+                                                              return Expanded(
+                                                                child: Center(
+                                                                  child: Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child:
+                                                                        Container(
+                                                                      padding: EdgeInsets
+                                                                          .all(20
+                                                                              .r),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: ColorConstants
+                                                                            .white,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(15.r),
+                                                                      ),
+                                                                      child:
+                                                                          CircularProgressIndicator(
+                                                                        color: ColorConstants
+                                                                            .blue,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            } else if (videosState
+                                                                is VideosStateVideos) {
+                                                              return Expanded(
+                                                                child:
+                                                                    // child: ListView
+
+                                                                    infoSectionIndex.value ==
+                                                                            0
+                                                                        ? CoursePageWidgets.aboutCourseSection(state
+                                                                            .course)
+                                                                        : ListView
+                                                                            .builder(
+                                                                            controller:
+                                                                                scrollController,
+                                                                            itemCount:
+                                                                                videosState.videos.length,
+                                                                            itemBuilder: (context, index) => CoursePageWidgets.videoItem(
+                                                                                courseId: widget.courseId,
+                                                                                context: context,
+                                                                                video: videosState.videos[index],
+                                                                                enrolledStatus: enrolledStatus),
+                                                                          ),
+                                                              );
+                                                            }
+                                                            return Container();
                                                           },
                                                         );
                                                       },
@@ -308,41 +363,98 @@ class _CoursePageState extends State<CoursePage> {
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 20.w),
                                   color: ColorConstants.blue,
-                                  child: Column(
-                                    children: [
-                                      kHeight(25.h),
-                                      CoursePageWidgets.infoSelection(
-                                        infoSectionIndex: infoSectionIndex,
-                                        isExpanded: isExpanded,
-                                      ),
-                                      BlocBuilder<VideosCubit,
-                                          List<VideoEntity>>(
-                                        builder: (context, videos) {
-                                          return BlocBuilder<
-                                              EnrolledCourseCubit,
-                                              EnrolledCourseEntity?>(
-                                            builder: (context, enrolledStatus) {
-                                              return Expanded(
-                                                child: ListView.builder(
-                                                  controller: scrollController,
-                                                  itemCount: videos.length,
-                                                  itemBuilder: (context,
-                                                          index) =>
-                                                      CoursePageWidgets.videoItem(
-                                                          courseId:
-                                                              widget.courseId,
-                                                          context: context,
-                                                          video: videos[index],
-                                                          enrolledStatus:
-                                                              enrolledStatus),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                  child: ValueListenableBuilder(
+                                      valueListenable: infoSectionIndex,
+                                      builder: (context, _, __) {
+                                        return Column(
+                                          children: [
+                                            kHeight(25.h),
+                                            CoursePageWidgets.infoSelection(
+                                              infoSectionIndex:
+                                                  infoSectionIndex,
+                                              isExpanded: isExpanded,
+                                            ),
+                                            BlocBuilder<VideosCubit,
+                                                VideosState>(
+                                              builder: (context, videosState) {
+                                                return BlocBuilder<
+                                                    EnrolledCourseCubit,
+                                                    EnrolledCourseEntity?>(
+                                                  builder: (context,
+                                                      enrolledStatus) {
+                                                    if (videosState
+                                                        is VideosStateLoading) {
+                                                      return Expanded(
+                                                        child: Center(
+                                                          child: Align(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: Container(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                          20.r),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color:
+                                                                    ColorConstants
+                                                                        .white,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15.r),
+                                                              ),
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                color:
+                                                                    ColorConstants
+                                                                        .blue,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else if (videosState
+                                                        is VideosStateVideos) {
+                                                      return Expanded(
+                                                        child:
+                                                            // child: ListView
+
+                                                            infoSectionIndex
+                                                                        .value ==
+                                                                    0
+                                                                ? CoursePageWidgets
+                                                                    .aboutCourseSection(
+                                                                        state
+                                                                            .course)
+                                                                : ListView
+                                                                    .builder(
+                                                                    controller:
+                                                                        scrollController,
+                                                                    itemCount: videosState
+                                                                        .videos
+                                                                        .length,
+                                                                    itemBuilder: (context, index) => CoursePageWidgets.videoItem(
+                                                                        courseId:
+                                                                            widget
+                                                                                .courseId,
+                                                                        context:
+                                                                            context,
+                                                                        video: videosState.videos[
+                                                                            index],
+                                                                        enrolledStatus:
+                                                                            enrolledStatus),
+                                                                  ),
+                                                      );
+                                                    }
+                                                    return Container();
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      }),
                                 ),
                               );
                             }),
@@ -356,34 +468,42 @@ class _CoursePageState extends State<CoursePage> {
                 }
               },
             ),
-            BlocBuilder<EnrolledCourseCubit, EnrolledCourseEntity?>(
-              builder: (context, enrolledCourse) {
-                if (enrolledCourse != null) {
-                  return SizedBox();
-                } else {
-                  return GestureDetector(
-                    onTap: () async {
-                      await context.read<EnrolledCourseCubit>().enrollCourse(
-                          courseId: widget.courseId, userId: storedUserData.userId);
+            BlocBuilder<VideosCubit, VideosState>(
+              builder: (context, videoState) {
+                return BlocBuilder<EnrolledCourseCubit, EnrolledCourseEntity?>(
+                  builder: (context, enrolledCourse) {
+                    if (enrolledCourse != null ||
+                        videoState is VideosStateLoading ||
+                        videoState is VideosStateInitial) {
+                      return SizedBox();
+                    } else {
+                      return GestureDetector(
+                        onTap: () async {
+                          await context
+                              .read<EnrolledCourseCubit>()
+                              .enrollCourse(
+                                  courseId: widget.courseId,
+                                  userId: storedUserData.userId);
 
-                      context
-                          .read<CoursePageBloc>()
-                          .add(CoursePageEventGetCourseById(widget.courseId));
-                    },
-                    child: Container(
-                      color: ColorConstants.white,
-                      padding: EdgeInsets.symmetric(vertical: 15.h),
-                      child: Center(
-                        child: kText(
-                          text: 'Enroll Now',
-                          color: ColorConstants.blue,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                          context.read<CoursePageBloc>().add(
+                              CoursePageEventGetCourseById(widget.courseId));
+                        },
+                        child: Container(
+                          color: ColorConstants.white,
+                          padding: EdgeInsets.symmetric(vertical: 15.h),
+                          child: Center(
+                            child: kText(
+                              text: 'Enroll Now',
+                              color: ColorConstants.blue,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }
+                      );
+                    }
+                  },
+                );
               },
             )
           ],

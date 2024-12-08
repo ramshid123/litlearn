@@ -14,6 +14,10 @@ abstract interface class AuthService {
   Future<User?> getCurrentUser();
 
   Future sendPasswordResetEmail(String email);
+
+  Future<bool> checkEmailVerification();
+
+  Future<void> sendVerificationEmail();
 }
 
 class AuthServiceImpl implements AuthService {
@@ -67,6 +71,31 @@ class AuthServiceImpl implements AuthService {
   Future sendPasswordResetEmail(String email) async {
     try {
       await authInstance.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      throw KustomException(e.toString());
+    }
+  }
+
+  @override
+  Future<bool> checkEmailVerification() async {
+    try {
+      await authInstance.currentUser!.reload();
+      if (authInstance.currentUser != null) {
+        return authInstance.currentUser!.emailVerified;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw KustomException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> sendVerificationEmail() async {
+    try {
+      if (authInstance.currentUser != null) {
+        await authInstance.currentUser!.sendEmailVerification();
+      }
     } catch (e) {
       throw KustomException(e.toString());
     }

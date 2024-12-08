@@ -2,11 +2,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:litlearn/core/entity/category_entity.dart';
 import 'package:litlearn/core/entity/course_entity.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/widgets/bottom_nav_bar.dart';
 import 'package:litlearn/core/widgets/common.dart';
 import 'package:litlearn/features/learning/presentation/home_page/bloc/home_page_bloc.dart';
+import 'package:litlearn/features/learning/presentation/home_page/cubit/categories_cubit.dart';
 import 'package:litlearn/features/learning/presentation/home_page/widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,10 +19,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final selectedCategory = ValueNotifier(0);
+
   @override
   void initState() {
     // TODO: implement initState
-    context.read<HomePageBloc>().add(HomePageEventGetCourses());
+
+    context.read<CategoriesCubit>().getCategories();
+    context.read<HomePageBloc>().add(HomePageEventGetCourses(null));
+
     super.initState();
   }
 
@@ -47,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           Column(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
+                padding: EdgeInsets.symmetric(vertical: 20.h),
                 decoration: BoxDecoration(
                   color: ColorConstants.liteBlue,
                   // boxShadow: [
@@ -143,55 +150,133 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.bold,
                         ),
                         kHeight(30.h),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          clipBehavior: Clip.none,
-                          child: Row(
-                            children: [
-                              for (int i = 0; i < 5; i++)
-                                HomePageWidgets.categoryItem(
-                                  index: i,
-                                  text: 'Design',
-                                  icon: Icons.design_services,
+                        BlocBuilder<CategoriesCubit, CategoriesState>(
+                          builder: (context, categoriesState) {
+                            if (categoriesState is CategoriesStatePageLoading) {
+                              return Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 100.h),
+                                  padding: EdgeInsets.all(20.r),
+                                  decoration: BoxDecoration(
+                                    color: ColorConstants.white,
+                                    borderRadius: BorderRadius.circular(15.r),
+                                  ),
+                                  child: CircularProgressIndicator(
+                                    color: ColorConstants.blue,
+                                  ),
                                 ),
-                            ],
-                          ),
-                        ),
-                        kHeight(30.h),
-                        // kText(
-                        //   text: 'Most Popular:',
-                        //   fontSize: 27,
-                        //   fontWeight: FontWeight.bold,
-                        //   color: ColorConstants.greyWhite,
-                        // ),
-                        // kHeight(20.h),
-                        BlocBuilder<HomePageBloc, HomePageState>(
-                          buildWhen: (previous, current) {
-                            if (current is HomePageStateCourses) {
-                              return true;
-                            }
-                            return false;
-                          },
-                          builder: (context, state) {
-                            List<CourseEntity> homePageCourses = [];
-                            if (state is HomePageStateCourses) {
-                              homePageCourses = state.courses;
-                            }
-
-                            if (homePageCourses.isEmpty) {
-                              return CircularProgressIndicator();
-                            } else {
+                              );
+                            } else if (categoriesState
+                                is CategoriesStateCategories) {
                               return Column(
+                                // NOTE HERE
                                 children: [
-                                  for (int i = 0;
-                                      i < homePageCourses.length;
-                                      i++)
-                                    HomePageWidgets.courseItem(
-                                      courseEntity: homePageCourses[i],
-                                      context: context,
-                                    )
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    clipBehavior: Clip.none,
+                                    child: ValueListenableBuilder(
+                                        valueListenable: selectedCategory,
+                                        builder: (context, _, __) {
+                                          return Row(
+                                            children: [
+                                              for (int i = 0;
+                                                  i <
+                                                      categoriesState
+                                                          .categories.length;
+                                                  i++)
+                                                HomePageWidgets.categoryItem(
+                                                  context: context,
+                                                  index: i,
+                                                  category: categoriesState
+                                                      .categories[i],
+                                                  selectedCategory:
+                                                      selectedCategory,
+                                                ),
+                                            ],
+                                          );
+                                        }),
+                                  ),
+                                  kHeight(30.h),
+                                  // kText(
+                                  //   text: 'Most Popular:',
+                                  //   fontSize: 27,
+                                  //   fontWeight: FontWeight.bold,
+                                  //   color: ColorConstants.greyWhite,
+                                  // ),
+                                  // kHeight(20.h),
+                                  BlocBuilder<HomePageBloc, HomePageState>(
+                                    builder: (context, state) {
+                                      if (state is HomePageStateCourseLoading) {
+                                        return Align(
+                                          alignment: Alignment.center,
+                                          child: Container(
+                                            margin: EdgeInsets.only(top: 100.h),
+                                            padding: EdgeInsets.all(20.r),
+                                            decoration: BoxDecoration(
+                                              color: ColorConstants.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(15.r),
+                                            ),
+                                            child: CircularProgressIndicator(
+                                              color: ColorConstants.blue,
+                                            ),
+                                          ),
+                                        );
+                                      } else if (state
+                                          is HomePageStateCourses) {
+                                        return state.courses.isEmpty
+                                            ? Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 100.h),
+                                                width: double.infinity,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 20.w),
+                                                child: kText(
+                                                  text: 'No Courses Found',
+                                                  textAlign: TextAlign.center,
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: ColorConstants.white
+                                                      .withOpacity(0.3),
+                                                ),
+                                              )
+                                            : Column(
+                                                children: [
+                                                  for (int i = 0;
+                                                      i < state.courses.length;
+                                                      i++)
+                                                    HomePageWidgets.courseItem(
+                                                      courseEntity:
+                                                          state.courses[i],
+                                                      context: context,
+                                                    )
+                                                ],
+                                              );
+                                      }
+                                      return Align(
+                                        alignment: Alignment.center,
+                                        child: Container(
+                                          margin: EdgeInsets.only(top: 100.h),
+                                          padding: EdgeInsets.all(10.r),
+                                          decoration: BoxDecoration(
+                                            color: ColorConstants.white,
+                                            borderRadius:
+                                                BorderRadius.circular(15.r),
+                                          ),
+                                          child: Icon(
+                                            Icons.replay,
+                                            color: ColorConstants.blue,
+                                            size: 50.r,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ],
                               );
+                            } else {
+                              return const CircularProgressIndicator();
                             }
                           },
                         ),
