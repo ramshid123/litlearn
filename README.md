@@ -17,6 +17,13 @@ LitLearn is an e-learning platform where users can enroll in courses, learn new 
    ```bash
    git clone https://github.com/ramshid123/litlearn.git
    cd learnify
+
+2. Install dependencies
+   ```bash
    flutter pub get
+
+3. Run the app
+   ```bash
    flutter run
+
 Made with ❤️ using Flutter.
