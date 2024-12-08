@@ -19,7 +19,7 @@ LitLearn is an e-learning platform where users can enroll in courses, learn new 
    cd learnify
    flutter pub get
    flutter run
-  bash```
+
 
 
 
