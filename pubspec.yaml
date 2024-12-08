@@ -51,6 +51,7 @@ dependencies:
   intl: ^0.20.1
   flutter_svg: ^2.0.16
   flutter_dotenv: ^5.2.1
+  wakelock_plus: ^1.2.8
 
 dev_dependencies:
   flutter_test:

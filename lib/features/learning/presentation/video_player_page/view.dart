@@ -9,6 +9,7 @@ import 'package:litlearn/core/utils/calculate_duration.dart';
 import 'package:litlearn/core/widgets/common.dart';
 import 'package:litlearn/features/learning/presentation/video_player_page/cubit/video_player_cubit.dart';
 import 'package:video_player/video_player.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   // final videoId = '1733441710930';
@@ -34,6 +35,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
     );
+    WakelockPlus.enable();
 
     videoPlayerController =
         VideoPlayerController.networkUrl(Uri.parse(widget.video.videoUrl))
@@ -69,6 +71,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
     );
+    WakelockPlus.disable();
     super.dispose();
   }
 
@@ -135,8 +138,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                                   opacity: opacity,
                                   duration: const Duration(milliseconds: 500),
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20.w, vertical: 30.h),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 30.h),
                                     height: size.height,
                                     width: size.width,
                                     color: Colors.black.withOpacity(0.7),
@@ -144,189 +147,224 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: kText(
-                                            text: widget.video.tilte,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 10,
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            // Seek -10
-                                            GestureDetector(
-                                              onTap: () async {
-                                                if (opacity != 0) {
-                                                  await videoPlayerController
-                                                      .seekTo(Duration(
-                                                          milliseconds:
-                                                              videoPlayerController
-                                                                      .value
-                                                                      .position
-                                                                      .inMilliseconds -
-                                                                  10000));
-                                                } else {
-                                                  _toggleOverlay();
-                                                }
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.all(15.r),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white
-                                                      .withOpacity(0.7),
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: Icon(
-                                                  Icons.replay_10_outlined,
-                                                  color: ColorConstants.blue,
-                                                  size: 150.r,
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 5.w),
+                                          child: Row(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () =>
+                                                    Navigator.pop(context),
+                                                child: Container(
+                                                  padding: EdgeInsets.all(5.r),
+                                                  decoration: BoxDecoration(
+                                                    color: ColorConstants.white
+                                                        .withOpacity(0.8),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.arrow_back,
+                                                    size: 60.r,
+                                                    color: ColorConstants.blue,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-
-                                            // Play pause
-                                            GestureDetector(
-                                              onTap: () {
-                                                if (opacity != 0) {
-                                                  if (videoPlayerController
-                                                      .value.isPlaying) {
-                                                    videoPlayerController
-                                                        .pause();
-                                                    playBackState.value =
-                                                        VideoPlayBackState
-                                                            .paused;
+                                              kWidth(10.w),
+                                              kText(
+                                                text: widget.video.tilte,
+                                                maxLines: 2,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 10,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20.w),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              // Seek -10
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  if (opacity != 0) {
+                                                    await videoPlayerController
+                                                        .seekTo(Duration(
+                                                            milliseconds:
+                                                                videoPlayerController
+                                                                        .value
+                                                                        .position
+                                                                        .inMilliseconds -
+                                                                    10000));
                                                   } else {
-                                                    videoPlayerController
-                                                        .play();
-                                                    playBackState.value =
-                                                        VideoPlayBackState
-                                                            .playing;
+                                                    _toggleOverlay();
                                                   }
-                                                } else {
-                                                  _toggleOverlay();
-                                                }
-                                              },
-                                              child: ValueListenableBuilder(
-                                                  valueListenable:
-                                                      playBackState,
-                                                  builder: (context, _, __) {
-                                                    return Container(
-                                                      padding:
-                                                          EdgeInsets.all(15.r),
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white
-                                                            .withOpacity(0.7),
-                                                        shape: BoxShape.circle,
-                                                      ),
-                                                      child: playBackState
-                                                                  .value ==
-                                                              VideoPlayBackState
-                                                                  .buffering
-                                                          ? Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(
-                                                                          30.r),
-                                                              child:
-                                                                  const CircularProgressIndicator(
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(15.r),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white
+                                                        .withOpacity(0.7),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.replay_10_outlined,
+                                                    color: ColorConstants.blue,
+                                                    size: 150.r,
+                                                  ),
+                                                ),
+                                              ),
+
+                                              // Play pause
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if (opacity != 0) {
+                                                    if (videoPlayerController
+                                                        .value.isPlaying) {
+                                                      videoPlayerController
+                                                          .pause();
+                                                      playBackState.value =
+                                                          VideoPlayBackState
+                                                              .paused;
+                                                    } else {
+                                                      videoPlayerController
+                                                          .play();
+                                                      playBackState.value =
+                                                          VideoPlayBackState
+                                                              .playing;
+                                                    }
+                                                  } else {
+                                                    _toggleOverlay();
+                                                  }
+                                                },
+                                                child: ValueListenableBuilder(
+                                                    valueListenable:
+                                                        playBackState,
+                                                    builder: (context, _, __) {
+                                                      return Container(
+                                                        padding: EdgeInsets.all(
+                                                            15.r),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.white
+                                                              .withOpacity(0.7),
+                                                          shape:
+                                                              BoxShape.circle,
+                                                        ),
+                                                        child: playBackState
+                                                                    .value ==
+                                                                VideoPlayBackState
+                                                                    .buffering
+                                                            ? Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(30
+                                                                            .r),
+                                                                child:
+                                                                    const CircularProgressIndicator(
+                                                                  color:
+                                                                      ColorConstants
+                                                                          .blue,
+                                                                ),
+                                                              )
+                                                            : Icon(
+                                                                playBackState.value ==
+                                                                        VideoPlayBackState
+                                                                            .playing
+                                                                    ? Icons
+                                                                        .pause
+                                                                    : Icons
+                                                                        .play_arrow,
                                                                 color:
                                                                     ColorConstants
                                                                         .blue,
+                                                                size: 150.r,
                                                               ),
-                                                            )
-                                                          : Icon(
-                                                              playBackState
-                                                                          .value ==
-                                                                      VideoPlayBackState
-                                                                          .playing
-                                                                  ? Icons.pause
-                                                                  : Icons
-                                                                      .play_arrow,
-                                                              color:
-                                                                  ColorConstants
-                                                                      .blue,
-                                                              size: 150.r,
-                                                            ),
-                                                    );
-                                                  }),
-                                            ),
+                                                      );
+                                                    }),
+                                              ),
 
-                                            // Seek +10
-                                            GestureDetector(
-                                              onTap: () async {
-                                                if (opacity != 0) {
-                                                  await videoPlayerController
-                                                      .seekTo(Duration(
-                                                          milliseconds:
-                                                              videoPlayerController
-                                                                      .value
-                                                                      .position
-                                                                      .inMilliseconds +
-                                                                  10000));
-                                                } else {
-                                                  _toggleOverlay();
-                                                }
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.all(15.r),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white
-                                                      .withOpacity(0.7),
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: Icon(
-                                                  Icons.forward_10_outlined,
-                                                  color: ColorConstants.blue,
-                                                  size: 150.r,
+                                              // Seek +10
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  if (opacity != 0) {
+                                                    await videoPlayerController
+                                                        .seekTo(Duration(
+                                                            milliseconds:
+                                                                videoPlayerController
+                                                                        .value
+                                                                        .position
+                                                                        .inMilliseconds +
+                                                                    10000));
+                                                  } else {
+                                                    _toggleOverlay();
+                                                  }
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(15.r),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white
+                                                        .withOpacity(0.7),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.forward_10_outlined,
+                                                    color: ColorConstants.blue,
+                                                    size: 150.r,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                        ValueListenableBuilder(
-                                            valueListenable: seekPosition,
-                                            builder: (context, _, __) {
-                                              return Column(
-                                                children: [
-                                                  Container(
-                                                    height: 5.h,
-                                                    width: double.infinity,
-                                                    color: ColorConstants.blue
-                                                        .withOpacity(0.3),
-                                                    child: Align(
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20.w),
+                                          child: ValueListenableBuilder(
+                                              valueListenable: seekPosition,
+                                              builder: (context, _, __) {
+                                                return Column(
+                                                  children: [
+                                                    Container(
+                                                      height: 5.h,
+                                                      width: double.infinity,
+                                                      color: ColorConstants.blue
+                                                          .withOpacity(0.3),
+                                                      child: Align(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: LayoutBuilder(
+                                                            builder: (context,
+                                                                boxConstraints) {
+                                                          return Container(
+                                                            height: 5.h,
+                                                            width: boxConstraints
+                                                                    .maxWidth *
+                                                                seekPosition
+                                                                    .value,
+                                                            color:
+                                                                ColorConstants
+                                                                    .blue,
+                                                          );
+                                                        }),
+                                                      ),
+                                                    ),
+                                                    kHeight(15.h),
+                                                    Align(
                                                       alignment:
                                                           Alignment.centerLeft,
-                                                      child: LayoutBuilder(
-                                                          builder: (context,
-                                                              boxConstraints) {
-                                                        return Container(
-                                                          height: 5.h,
-                                                          width: boxConstraints
-                                                                  .maxWidth *
-                                                              seekPosition
-                                                                  .value,
-                                                          color: ColorConstants
-                                                              .blue,
-                                                        );
-                                                      }),
+                                                      child: kText(
+                                                        text:
+                                                            '${formatDurationWithColon(videoPlayerController.value.position.inSeconds)} / ${formatDurationWithColon(videoPlayerController.value.duration.inSeconds)}',
+                                                        fontSize: 7,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  kHeight(15.h),
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: kText(
-                                                      text:
-                                                          '${formatDurationWithColon(videoPlayerController.value.position.inSeconds)} / ${formatDurationWithColon(videoPlayerController.value.duration.inSeconds)}',
-                                                      fontSize: 7,
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            }),
+                                                  ],
+                                                );
+                                              }),
+                                        ),
                                       ],
                                     ),
                                   ),

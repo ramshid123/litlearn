@@ -16,6 +16,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     required UserEntity user,
   }) async {
     // emit loading state
+    emit(EditProfileStateLoading());
 
     final response =
         await _useCaseUpdateUserData(UseCaseUpdateUserDataParams(UserEntity(

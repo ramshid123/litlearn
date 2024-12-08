@@ -9,7 +9,7 @@ class SettingsPageWidgets {
     required String title,
     required String value,
   }) {
-    return Padding(
+    return Container(
       padding: EdgeInsets.symmetric(vertical: 5.h),
       child: Row(
         children: [

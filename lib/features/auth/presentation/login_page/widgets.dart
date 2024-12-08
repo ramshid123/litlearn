@@ -62,6 +62,7 @@ class LoginPageWidgets {
               ? TextInputType.visiblePassword
               : TextInputType.text,
       cursorColor: ColorConstants.blue,
+      obscureText: loginFormType == LoginFormType.password,
       onTapOutside: (v) => focusNode.unfocus(),
       decoration: InputDecoration(
         labelText: hintText,
