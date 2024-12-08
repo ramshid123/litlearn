@@ -1,16 +1,26 @@
-# litlearn
+# LitLearn 📚
 
-A new Flutter project.
+LitLearn is an e-learning platform where users can enroll in courses, learn new skills, and track their progress. It’s designed to provide a seamless experience for learners.
 
-## Getting Started
+## Features 🚀
+- **Browse Courses**: Explore a variety of courses across multiple categories.
+- **Enroll & Learn**: Enroll in courses and access video lectures, quizzes, and resources.
+- **User Profiles**: Track learning progress, manage purchases, and view certificates.
 
-This project is a starting point for a Flutter application.
+## Technologies Used 🛠️
+- **Frontend**: Flutter.
+- **Backend**: Firebase (for authentication and database) and Appwrite (for storage).
+- **Database**: Firestore.
 
-A few resources to get you started if this is your first Flutter project:
+## Getting Started ⚡
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ramshid123/litlearn.git
+   cd learnify
+   flutter pub get
+   flutter run
+  bash```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+Made with ❤️ using Flutter.
