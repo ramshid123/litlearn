@@ -16,7 +16,7 @@ LitLearn is an e-learning platform where users can enroll in courses, learn new 
 1. Clone the repository:
    ```bash
    git clone https://github.com/ramshid123/litlearn.git
-   cd learnify
+   cd litlearn
 
 2. Install dependencies
    ```bash
