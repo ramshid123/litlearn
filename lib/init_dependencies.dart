@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:litlearn/core/global%20states/user%20state/bloc/user_bloc.dart';
 import 'package:litlearn/features/auth/data/data%20source/auth_data_service.dart';
@@ -44,6 +45,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 final serviceLocator = GetIt.instance;
 
 Future initDependencies() async {
+  await dotenv.load(fileName: ".env");
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

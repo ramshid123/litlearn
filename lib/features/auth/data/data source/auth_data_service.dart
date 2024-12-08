@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:litlearn/core/error/exception.dart';
-import 'package:litlearn/features/auth/data/model/user_model.dart';
 
 abstract interface class AuthService {
   Future<void> login({required String email, required String password});

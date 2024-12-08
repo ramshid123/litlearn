@@ -1,4 +1,4 @@
-import 'package:fpdart/src/either.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:litlearn/core/entity/category_entity.dart';
 import 'package:litlearn/core/entity/enrolled_course_entity.dart';
 import 'package:litlearn/core/entity/video_entity.dart';

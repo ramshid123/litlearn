@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +8,6 @@ import 'package:litlearn/core/widgets/common.dart';
 import 'package:litlearn/features/auth/presentation/email_verification_page/view.dart';
 import 'package:litlearn/features/auth/presentation/login_page/bloc/login_bloc.dart';
 import 'package:litlearn/features/auth/presentation/login_page/content.dart';
-import 'package:litlearn/features/learning/presentation/home_page/view.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -42,7 +39,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     pageSwitchAnimationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
 
@@ -67,7 +63,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     pageSwitchAnimationController.dispose();
     textMoveAnimationController.dispose();
     super.dispose();
@@ -86,12 +81,15 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         } else if (state is LoginStateSuccess) {
           showToastMessage(context: context, message: 'Login Success');
           context.read<UserBloc>().add(UserEventUserUpdate(state.user));
-          Future.delayed(
-              const Duration(seconds: 1),
-              () async => Navigator.pushAndRemoveUntil(
+          Future.delayed(const Duration(seconds: 1), () async {
+            if (context.mounted) {
+              Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const EmailVerificationPage()),
-                  (_) => false));
+                  MaterialPageRoute(
+                      builder: (context) => const EmailVerificationPage()),
+                  (_) => false);
+            }
+          });
         }
       },
       child: ValueListenableBuilder(
@@ -124,26 +122,24 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                               await pageSwitchAnimationController.reverse();
                             }
                           },
-                          child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                kWidth(double.infinity),
-                                for (int i = 0; i < words.length; i++)
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        left: i.isEven ? 25.w : 0,
-                                        right: i.isOdd ? 25.w : 0),
-                                    child: kText(
-                                      text: words[i],
-                                      fontSize: 30,
-                                      family: 'PT Serif',
-                                      color: ColorConstants.greyWhite
-                                          .withOpacity(0.1),
-                                    ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              kWidth(double.infinity),
+                              for (int i = 0; i < words.length; i++)
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: i.isEven ? 25.w : 0,
+                                      right: i.isOdd ? 25.w : 0),
+                                  child: kText(
+                                    text: words[i],
+                                    fontSize: 30,
+                                    family: 'PT Serif',
+                                    color: ColorConstants.greyWhite
+                                        .withOpacity(0.1),
                                   ),
-                              ],
-                            ),
+                                ),
+                            ],
                           ),
                         ),
                       ),
@@ -241,7 +237,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                     color: ColorConstants.white,
                                     borderRadius: BorderRadius.circular(10.r),
                                   ),
-                                  child: CircularProgressIndicator(
+                                  child: const CircularProgressIndicator(
                                     color: ColorConstants.blue,
                                   ),
                                 ),

@@ -1,10 +1,9 @@
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
-import 'package:litlearn/core/entity/video_entity.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlearn/features/learning/domain/usecases/get_video_by_id.dart';
 import 'package:litlearn/features/learning/domain/usecases/update_enrolled_course_seqcount.dart';
-import 'package:meta/meta.dart';
 
 part 'video_player_state.dart';
 

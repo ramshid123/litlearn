@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlearn/features/auth/domain/usecases/check_email_verified.dart';
 import 'package:litlearn/features/auth/domain/usecases/logout.dart';
 import 'package:litlearn/features/auth/domain/usecases/send_verification_email.dart';
-import 'package:meta/meta.dart';
 
 part 'email_verification_state.dart';
 

@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlearn/core/entity/user_entity.dart';
 import 'package:litlearn/features/auth/domain/usecases/update_user_data.dart';
-import 'package:meta/meta.dart';
 
 part 'edit_profile_state.dart';
 

@@ -54,7 +54,10 @@ class HomePageWidgets {
             SvgPicture.network(
               // 'https://www.svgrepo.com/show/457025/coding.svg',
               category.icon,
-              color: isSelected ? ColorConstants.blue : ColorConstants.white,
+              // color: isSelected ? ColorConstants.blue : ColorConstants.white,
+              colorFilter: ColorFilter.mode(
+                  isSelected ? ColorConstants.blue : ColorConstants.white,
+                  BlendMode.srcIn),
               height: 20.r,
               width: 20.r,
             ),

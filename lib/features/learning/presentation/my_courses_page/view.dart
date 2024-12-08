@@ -23,7 +23,7 @@ class _MyCoursesPageState extends State<MyCoursesPage> {
   void initState() {
     storedUserData =
         (context.read<UserBloc>().state as UserStateUserEntity).userEntity;
-    // TODO: implement initState
+    
     context
         .read<MyCoursesBloc>()
         .add(MyCoursesEventFetchCourses(storedUserData.userId));
@@ -54,7 +54,7 @@ class _MyCoursesPageState extends State<MyCoursesPage> {
             children: [
               Container(
                 padding: EdgeInsets.symmetric(vertical: 20.h),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: ColorConstants.liteBlue,
                 ),
                 child: kText(
@@ -177,7 +177,7 @@ class _MyCoursesPageState extends State<MyCoursesPage> {
                                 color: ColorConstants.white,
                                 borderRadius: BorderRadius.circular(15.r),
                               ),
-                              child: CircularProgressIndicator(
+                              child: const CircularProgressIndicator(
                                 color: ColorConstants.blue,
                               ),
                             ),

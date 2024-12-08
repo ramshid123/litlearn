@@ -103,7 +103,7 @@ class LearningRemoteDataSourceImpl implements LearningRemoteDataSource {
 
       final newDoc = collection.doc();
 
-      final response = await newDoc.set(EnrolledCourseModel(
+      await newDoc.set(EnrolledCourseModel(
         id: '${userId}_${DateTime.now().millisecondsSinceEpoch}_${const uuid.Uuid().v1()}',
         courseId: courseId,
         unlockCount: 0,

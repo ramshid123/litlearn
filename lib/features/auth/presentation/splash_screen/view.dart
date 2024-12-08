@@ -6,7 +6,6 @@ import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/features/auth/presentation/email_verification_page/view.dart';
 import 'package:litlearn/features/auth/presentation/login_page/view.dart';
 import 'package:litlearn/features/auth/presentation/splash_screen/cubit/user_auth_cubit.dart';
-import 'package:litlearn/features/learning/presentation/home_page/view.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,7 +17,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     context.read<UserAuthCubit>().checkForLogin();
     super.initState();
   }
@@ -30,21 +28,25 @@ class _SplashScreenState extends State<SplashScreen> {
         if (state is UserAuthStateResult) {
           await Future.delayed(const Duration(seconds: 1));
           if (state.user == null) {
-            await Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-                (_) => false);
+            if (context.mounted) {
+              await Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  (_) => false);
+            }
           } else {
-            context.read<UserBloc>().add(UserEventUserUpdate(state.user!));
-            await Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const EmailVerificationPage()),
-                (_) => false);
+            if (context.mounted) {
+              context.read<UserBloc>().add(UserEventUserUpdate(state.user!));
+              await Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const EmailVerificationPage()),
+                  (_) => false);
+            }
           }
 
           // context.read<UserBloc>().add(event)
         }
-        // TODO: implement listener
       },
       child: Scaffold(
         backgroundColor: ColorConstants.blue,

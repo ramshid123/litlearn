@@ -1,9 +1,9 @@
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlearn/core/entity/user_entity.dart';
 import 'package:litlearn/features/auth/domain/usecases/get_current_uid.dart';
-import 'package:meta/meta.dart';
 
 part 'user_auth_state.dart';
 

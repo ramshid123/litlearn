@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,26 +6,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/global%20states/user%20state/bloc/user_bloc.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/features/auth/presentation/edit_profile_page/cubit/edit_profile_cubit.dart';
-import 'package:litlearn/features/auth/presentation/edit_profile_page/view.dart';
 import 'package:litlearn/features/auth/presentation/email_verification_page/cubit/email_verification_cubit.dart';
-import 'package:litlearn/features/auth/presentation/email_verification_page/view.dart';
 import 'package:litlearn/features/auth/presentation/login_page/bloc/login_bloc.dart';
 import 'package:litlearn/features/auth/presentation/settings_page/cubit/settings_cubit.dart';
-import 'package:litlearn/features/auth/presentation/settings_page/view.dart';
 import 'package:litlearn/features/auth/presentation/splash_screen/cubit/user_auth_cubit.dart';
 import 'package:litlearn/features/learning/presentation/course_page/bloc/course_page_bloc.dart';
 import 'package:litlearn/features/learning/presentation/course_page/cubit/enrolled_course_cubit.dart';
 import 'package:litlearn/features/learning/presentation/course_page/cubit/videos_cubit.dart';
-import 'package:litlearn/features/learning/presentation/course_page/view.dart';
 import 'package:litlearn/features/learning/presentation/home_page/bloc/home_page_bloc.dart';
 import 'package:litlearn/features/learning/presentation/home_page/cubit/categories_cubit.dart';
-import 'package:litlearn/features/learning/presentation/home_page/view.dart';
-import 'package:litlearn/features/auth/presentation/login_page/view.dart';
 import 'package:litlearn/features/auth/presentation/splash_screen/view.dart';
 import 'package:litlearn/features/learning/presentation/my_courses_page/bloc/my_courses_bloc.dart';
-import 'package:litlearn/features/learning/presentation/my_courses_page/view.dart';
 import 'package:litlearn/features/learning/presentation/video_player_page/cubit/video_player_cubit.dart';
-import 'package:litlearn/features/learning/presentation/video_player_page/view.dart';
 import 'package:litlearn/init_dependencies.dart';
 
 void main() async {
@@ -78,18 +69,18 @@ class MyApp extends StatelessWidget {
         BlocProvider<EmailVerificationCubit>(create: (_) => serviceLocator()),
       ],
       child: ScreenUtilInit(
-        designSize: Size(392.72727272727275, 803.6363636363636),
+        designSize: const Size(392.72727272727275, 803.6363636363636),
         child: SafeArea(
           child: MaterialApp(
             theme: ThemeData(
-              pageTransitionsTheme: PageTransitionsTheme(
+              pageTransitionsTheme: const PageTransitionsTheme(
                 builders: {
                   TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
                 },
               ),
             ),
             title: 'LitLearn',
-            home: SplashScreen(),
+            home: const SplashScreen(),
             // home: MyCoursesPage(),
           ),
         ),

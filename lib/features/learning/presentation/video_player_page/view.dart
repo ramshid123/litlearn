@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/entity/enrolled_course_entity.dart';
 import 'package:litlearn/core/entity/video_entity.dart';
-import 'package:litlearn/core/global%20states/user%20state/bloc/user_bloc.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/utils/calculate_duration.dart';
 import 'package:litlearn/core/widgets/common.dart';
@@ -69,7 +66,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
     );
@@ -129,7 +125,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                 state is VideoPlayerStateLoadVideo
                     ? GestureDetector(
                         onTap: _toggleOverlay,
-                        child: Container(
+                        child: SizedBox(
                           height: size.height,
                           width: size.width,
                           child: ValueListenableBuilder(
@@ -148,7 +144,14 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Container(),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: kText(
+                                            text: widget.video.tilte,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 10,
+                                          ),
+                                        ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
@@ -228,7 +231,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                                                                       .all(
                                                                           30.r),
                                                               child:
-                                                                  CircularProgressIndicator(
+                                                                  const CircularProgressIndicator(
                                                                 color:
                                                                     ColorConstants
                                                                         .blue,
@@ -339,7 +342,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.all(30.r),
-                          child: CircularProgressIndicator(
+                          child: const CircularProgressIndicator(
                             color: ColorConstants.blue,
                           ),
                         ),

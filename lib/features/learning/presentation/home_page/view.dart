@@ -2,8 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:litlearn/core/entity/category_entity.dart';
-import 'package:litlearn/core/entity/course_entity.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/widgets/bottom_nav_bar.dart';
 import 'package:litlearn/core/widgets/common.dart';
@@ -23,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
 
     context.read<CategoriesCubit>().getCategories();
     context.read<HomePageBloc>().add(HomePageEventGetCourses(null));
@@ -55,7 +53,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Container(
                 padding: EdgeInsets.symmetric(vertical: 20.h),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: ColorConstants.liteBlue,
                   // boxShadow: [
                   //   BoxShadow(
@@ -80,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.5),
-                                offset: Offset(0, 0),
+                                offset: const Offset(0, 0),
                                 blurRadius: 9,
                                 spreadRadius: 0,
                               ),
@@ -100,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.5),
-                                offset: Offset(0, 0),
+                                offset: const Offset(0, 0),
                                 blurRadius: 9,
                                 spreadRadius: 0,
                               ),
@@ -162,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                                     color: ColorConstants.white,
                                     borderRadius: BorderRadius.circular(15.r),
                                   ),
-                                  child: CircularProgressIndicator(
+                                  child: const CircularProgressIndicator(
                                     color: ColorConstants.blue,
                                   ),
                                 ),
@@ -218,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                                               borderRadius:
                                                   BorderRadius.circular(15.r),
                                             ),
-                                            child: CircularProgressIndicator(
+                                            child: const CircularProgressIndicator(
                                               color: ColorConstants.blue,
                                             ),
                                           ),

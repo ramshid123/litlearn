@@ -12,7 +12,6 @@ import 'package:litlearn/core/utils/calculate_duration.dart';
 import 'package:litlearn/core/utils/string_funtions.dart';
 import 'package:litlearn/core/widgets/common.dart';
 import 'package:litlearn/features/learning/presentation/course_page/bloc/course_page_bloc.dart';
-import 'package:litlearn/features/learning/presentation/course_page/cubit/videos_cubit.dart';
 import 'package:litlearn/features/learning/presentation/video_player_page/view.dart';
 
 class CoursePageWidgets {
@@ -130,9 +129,11 @@ class CoursePageWidgets {
                     enrolledCourseEntity: enrolledStatus,
                   )));
 
-          context
-              .read<CoursePageBloc>()
-              .add(CoursePageEventGetCourseById(courseId));
+          if (context.mounted) {
+            context
+                .read<CoursePageBloc>()
+                .add(CoursePageEventGetCourseById(courseId));
+          }
         }
       },
       child: Container(

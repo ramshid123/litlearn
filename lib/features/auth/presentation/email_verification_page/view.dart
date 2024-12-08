@@ -22,7 +22,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animController;
 
-  final emailSentTime = ValueNotifier(Duration(seconds: 60));
+  final emailSentTime = ValueNotifier(const Duration(seconds: 60));
 
   final words = [
     'Advance',
@@ -39,7 +39,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage>
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     _animController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200));
     context
@@ -62,7 +62,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage>
   }
 
   Future customTimerFunction() async {
-    emailSentTime.value = Duration(seconds: 60);
+    emailSentTime.value = const Duration(seconds: 60);
     bool isActive = true;
     while (isActive) {
       await Future.delayed(const Duration(seconds: 1));
@@ -92,7 +92,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage>
           if (state.status) {
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => HomePage()),
+                MaterialPageRoute(builder: (context) => const HomePage()),
                 (_) => false);
           } else {
             if (state.sendMail) {
@@ -105,14 +105,14 @@ class _EmailVerificationPageState extends State<EmailVerificationPage>
         if (state is EmailVerificationStateLogout) {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => LoginPage()),
+              MaterialPageRoute(builder: (context) => const LoginPage()),
               (_) => false);
         }
         if (state is EmailVerificationStateSentEmail) {
           showToastMessage(
               context: context, message: 'Email is sent to your mail');
         }
-        // TODO: implement listener
+        
       },
       child: Scaffold(
         backgroundColor: ColorConstants.liteBlue,
@@ -121,25 +121,23 @@ class _EmailVerificationPageState extends State<EmailVerificationPage>
           children: [
             Transform.scale(
               scale: 3,
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    kWidth(double.infinity),
-                    for (int i = 0; i < words.length; i++)
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: i.isEven ? 25.w : 0,
-                            right: i.isOdd ? 25.w : 0),
-                        child: kText(
-                          text: words[i],
-                          fontSize: 30,
-                          family: 'PT Serif',
-                          color: ColorConstants.greyWhite.withOpacity(0.1),
-                        ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  kWidth(double.infinity),
+                  for (int i = 0; i < words.length; i++)
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: i.isEven ? 25.w : 0,
+                          right: i.isOdd ? 25.w : 0),
+                      child: kText(
+                        text: words[i],
+                        fontSize: 30,
+                        family: 'PT Serif',
+                        color: ColorConstants.greyWhite.withOpacity(0.1),
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
             ),
             BlocBuilder<EmailVerificationCubit, EmailVerificationState>(
@@ -157,7 +155,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage>
                             color: ColorConstants.white,
                             borderRadius: BorderRadius.circular(15.r),
                           ),
-                          child: CircularProgressIndicator(
+                          child: const CircularProgressIndicator(
                             color: ColorConstants.blue,
                           ),
                         );

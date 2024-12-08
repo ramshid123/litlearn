@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:litlearn/core/entity/user_entity.dart';
 import 'package:litlearn/core/global%20states/user%20state/bloc/user_bloc.dart';
 import 'package:litlearn/core/theme/palette.dart';
@@ -57,7 +56,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           showToastMessage(context: context, message: state.errorMsg);
         }
 
-        // TODO: implement listener
+        
       },
       child: Scaffold(
         backgroundColor: ColorConstants.blue,
@@ -107,7 +106,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
-                        offset: Offset(0, 0),
+                        offset: const Offset(0, 0),
                         blurRadius: 9,
                         spreadRadius: 0,
                       ),

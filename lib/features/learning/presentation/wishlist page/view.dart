@@ -31,7 +31,7 @@ class WishlistPage extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.symmetric(vertical: 20.h),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: ColorConstants.liteBlue,
                 ),
                 child: kText(

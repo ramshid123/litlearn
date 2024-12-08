@@ -1,4 +1,4 @@
-import 'package:fpdart/src/either.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:litlearn/core/error/kfailure.dart';
 import 'package:litlearn/core/usecase/usecase.dart';
 import 'package:litlearn/features/learning/domain/repository/remote_repository.dart';

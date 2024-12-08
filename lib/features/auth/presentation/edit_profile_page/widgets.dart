@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -78,9 +77,9 @@ class EditProfilePageWidgets {
         datePickerTheme: DatePickerThemeData(
           backgroundColor: ColorConstants.white,
           dividerColor: ColorConstants.blue,
-          dayOverlayColor: WidgetStatePropertyAll(ColorConstants.blue),
+          dayOverlayColor: const WidgetStatePropertyAll(ColorConstants.blue),
           surfaceTintColor: ColorConstants.blue.withOpacity(0.1),
-          yearOverlayColor: WidgetStatePropertyAll(ColorConstants.blue),
+          yearOverlayColor: const WidgetStatePropertyAll(ColorConstants.blue),
         ), // Set your desired color
       ),
       child: Padding(
@@ -236,7 +235,7 @@ class EditProfilePageWidgets {
 
 class _TestContainre extends StatelessWidget {
   final ValueNotifier<int> gender;
-  const _TestContainre({super.key, required this.gender});
+  const _TestContainre({required this.gender});
 
   @override
   Widget build(BuildContext context) {
@@ -259,7 +258,7 @@ class _TestContainre extends StatelessWidget {
                   value: 1,
                   groupValue: gender.value,
                   activeColor: ColorConstants.blue,
-                  fillColor: WidgetStatePropertyAll(ColorConstants.blue),
+                  fillColor: const WidgetStatePropertyAll(ColorConstants.blue),
                   onChanged: (v) => gender.value = v ?? 1,
                 ),
                 kText(
@@ -272,7 +271,7 @@ class _TestContainre extends StatelessWidget {
                 Radio(
                   value: 0,
                   activeColor: ColorConstants.blue,
-                  fillColor: WidgetStatePropertyAll(ColorConstants.blue),
+                  fillColor: const WidgetStatePropertyAll(ColorConstants.blue),
                   groupValue: gender.value,
                   onChanged: (v) => gender.value = v ?? 0,
                 ),

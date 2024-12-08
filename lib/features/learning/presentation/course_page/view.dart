@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/entity/enrolled_course_entity.dart';
 import 'package:litlearn/core/entity/user_entity.dart';
-import 'package:litlearn/core/entity/video_entity.dart';
 import 'package:litlearn/core/global%20states/user%20state/bloc/user_bloc.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/utils/calculate_duration.dart';
@@ -32,7 +29,6 @@ class _CoursePageState extends State<CoursePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     storedUserData =
         (context.read<UserBloc>().state as UserStateUserEntity).userEntity;
 
@@ -44,7 +40,7 @@ class _CoursePageState extends State<CoursePage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    MediaQuery.sizeOf(context);
     return BlocListener<CoursePageBloc, CoursePageState>(
       listener: (context, state) {
         if (state is CoursePageStateCourse) {
@@ -62,7 +58,7 @@ class _CoursePageState extends State<CoursePage> {
           children: [
             Container(
               padding: EdgeInsets.symmetric(vertical: 20.h),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: ColorConstants.liteBlue,
                 // boxShadow: [
                 //   BoxShadow(
@@ -89,7 +85,7 @@ class _CoursePageState extends State<CoursePage> {
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.5),
-                                offset: Offset(0, 0),
+                                offset: const Offset(0, 0),
                                 blurRadius: 9,
                                 spreadRadius: 0,
                               ),
@@ -114,7 +110,7 @@ class _CoursePageState extends State<CoursePage> {
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black.withOpacity(0.5),
-                                        offset: Offset(0, 0),
+                                        offset: const Offset(0, 0),
                                         blurRadius: 9,
                                         spreadRadius: 0,
                                       ),
@@ -146,7 +142,7 @@ class _CoursePageState extends State<CoursePage> {
                             color: ColorConstants.white,
                             borderRadius: BorderRadius.circular(15.r),
                           ),
-                          child: CircularProgressIndicator(
+                          child: const CircularProgressIndicator(
                             color: ColorConstants.blue,
                           ),
                         ),
@@ -306,7 +302,7 @@ class _CoursePageState extends State<CoursePage> {
                                                                             BorderRadius.circular(15.r),
                                                                       ),
                                                                       child:
-                                                                          CircularProgressIndicator(
+                                                                          const CircularProgressIndicator(
                                                                         color: ColorConstants
                                                                             .blue,
                                                                       ),
@@ -405,7 +401,7 @@ class _CoursePageState extends State<CoursePage> {
                                                                             15.r),
                                                               ),
                                                               child:
-                                                                  CircularProgressIndicator(
+                                                                  const CircularProgressIndicator(
                                                                 color:
                                                                     ColorConstants
                                                                         .blue,
@@ -475,7 +471,7 @@ class _CoursePageState extends State<CoursePage> {
                     if (enrolledCourse != null ||
                         videoState is VideosStateLoading ||
                         videoState is VideosStateInitial) {
-                      return SizedBox();
+                      return const SizedBox();
                     } else {
                       return GestureDetector(
                         onTap: () async {
@@ -485,8 +481,10 @@ class _CoursePageState extends State<CoursePage> {
                                   courseId: widget.courseId,
                                   userId: storedUserData.userId);
 
-                          context.read<CoursePageBloc>().add(
-                              CoursePageEventGetCourseById(widget.courseId));
+                          if (context.mounted) {
+                            context.read<CoursePageBloc>().add(
+                                CoursePageEventGetCourseById(widget.courseId));
+                          }
                         },
                         child: Container(
                           color: ColorConstants.white,

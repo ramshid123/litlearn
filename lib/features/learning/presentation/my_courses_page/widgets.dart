@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:litlearn/core/entity/course_entity.dart';
-import 'package:litlearn/core/entity/enrolled_course_entity.dart';
-import 'package:litlearn/core/entity/video_entity.dart';
 import 'package:litlearn/core/theme/palette.dart';
 import 'package:litlearn/core/utils/calculate_duration.dart';
 import 'package:litlearn/core/widgets/common.dart';

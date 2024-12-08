@@ -24,7 +24,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     userEntity =
         (context.read<UserBloc>().state as UserStateUserEntity).userEntity;
 
@@ -33,7 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    MediaQuery.sizeOf(context);
     return BlocListener<SettingsCubit, SettingsState>(
       listener: (context, state) {
         if (state is SettingsStateFailure) {
@@ -41,9 +40,11 @@ class _SettingsPageState extends State<SettingsPage> {
         } else if (state is SettingsStateLogoutSuccess) {
           showToastMessage(context: context, message: 'Logging out');
           Future.delayed(const Duration(seconds: 1), () async {
-            await Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => LoginPage()),
-                (_) => false);
+            if (context.mounted) {
+              await Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  (_) => false);
+            }
           });
         }
       },
@@ -71,7 +72,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.2),
-                            offset: Offset(0, 0),
+                            offset: const Offset(0, 0),
                             blurRadius: 9,
                             spreadRadius: 0,
                           ),
@@ -91,7 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.1),
-                                      offset: Offset(0, 0),
+                                      offset: const Offset(0, 0),
                                       blurRadius: 9,
                                       spreadRadius: 0,
                                     ),
@@ -130,7 +131,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             onTap: () async {
                               await Navigator.of(context).push(
                                   MaterialPageRoute(
-                                      builder: (context) => EditProfilePage()));
+                                      builder: (context) =>
+                                          const EditProfilePage()));
                             },
                             child: SettingsPageWidgets.settingButton(
                               icon: Icons.edit,
@@ -164,7 +166,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.2),
-                            offset: Offset(0, 0),
+                            offset: const Offset(0, 0),
                             blurRadius: 9,
                             spreadRadius: 0,
                           ),
@@ -214,7 +216,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.2),
-                            offset: Offset(0, 0),
+                            offset: const Offset(0, 0),
                             blurRadius: 9,
                             spreadRadius: 0,
                           ),

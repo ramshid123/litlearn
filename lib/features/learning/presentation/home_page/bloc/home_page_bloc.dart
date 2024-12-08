@@ -1,11 +1,9 @@
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
-import 'package:litlearn/core/entity/category_entity.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlearn/core/entity/course_entity.dart';
-import 'package:litlearn/features/learning/domain/usecases/get_categories.dart';
 import 'package:litlearn/features/learning/domain/usecases/get_courses.dart';
-import 'package:meta/meta.dart';
 
 part 'home_page_event.dart';
 part 'home_page_state.dart';
@@ -18,7 +16,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   })  : _useCaseGetCourses = useCaseGetCourses,
         super(HomePageInitial()) {
     on<HomePageEvent>((event, emit) {
-      // TODO: implement event handler
+      
     });
 
     on<HomePageEventGetCourses>(

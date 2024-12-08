@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:litlearn/core/entity/course_entity.dart';
 
 class CourseModel extends CourseEntity {
